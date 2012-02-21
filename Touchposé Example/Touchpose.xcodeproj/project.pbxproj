@@ -1,0 +1,306 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5FFDBED914EEEAAB002CBB71 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBED814EEEAAB002CBB71 /* UIKit.framework */; };
+		5FFDBEDB14EEEAAB002CBB71 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBEDA14EEEAAB002CBB71 /* Foundation.framework */; };
+		5FFDBEDD14EEEAAB002CBB71 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBEDC14EEEAAB002CBB71 /* CoreGraphics.framework */; };
+		5FFDBEE314EEEAAB002CBB71 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FFDBEE114EEEAAB002CBB71 /* InfoPlist.strings */; };
+		5FFDBEE514EEEAAB002CBB71 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFDBEE414EEEAAB002CBB71 /* main.m */; };
+		5FFDBEE914EEEAAB002CBB71 /* QAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFDBEE814EEEAAB002CBB71 /* QAppDelegate.m */; };
+		5FFDBEEC14EEEAAB002CBB71 /* QViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFDBEEB14EEEAAB002CBB71 /* QViewController.m */; };
+		5FFDBEFF14EEF737002CBB71 /* QTouchposeApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFDBEFE14EEF737002CBB71 /* QTouchposeApplication.m */; };
+		5FFDBF0714EF2A53002CBB71 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFDBF0614EF2A53002CBB71 /* Icon.png */; };
+		5FFDBF0914EF2A98002CBB71 /* Icon-iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFDBF0814EF2A98002CBB71 /* Icon-iPad.png */; };
+		5FFDBF0B14EF2ED9002CBB71 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFDBF0A14EF2ED9002CBB71 /* Icon@2x.png */; };
+		5FFDBF1314F058F6002CBB71 /* Touchposé.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFDBF1214F058F6002CBB71 /* Touchposé.png */; };
+		5FFDBF1514F05A6E002CBB71 /* Touchposé@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FFDBF1414F05A6D002CBB71 /* Touchposé@2x.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5FFDBED414EEEAAB002CBB71 /* Touchposé.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Touchposé.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FFDBED814EEEAAB002CBB71 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		5FFDBEDA14EEEAAB002CBB71 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5FFDBEDC14EEEAAB002CBB71 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		5FFDBEE014EEEAAB002CBB71 /* Touchpose-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Touchpose-Info.plist"; sourceTree = "<group>"; };
+		5FFDBEE214EEEAAB002CBB71 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5FFDBEE414EEEAAB002CBB71 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5FFDBEE614EEEAAB002CBB71 /* Touchpose-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Touchpose-Prefix.pch"; sourceTree = "<group>"; };
+		5FFDBEE714EEEAAB002CBB71 /* QAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAppDelegate.h; sourceTree = "<group>"; };
+		5FFDBEE814EEEAAB002CBB71 /* QAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QAppDelegate.m; sourceTree = "<group>"; };
+		5FFDBEEA14EEEAAB002CBB71 /* QViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QViewController.h; sourceTree = "<group>"; };
+		5FFDBEEB14EEEAAB002CBB71 /* QViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QViewController.m; sourceTree = "<group>"; };
+		5FFDBEFD14EEF737002CBB71 /* QTouchposeApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTouchposeApplication.h; sourceTree = "<group>"; };
+		5FFDBEFE14EEF737002CBB71 /* QTouchposeApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTouchposeApplication.m; sourceTree = "<group>"; };
+		5FFDBF0614EF2A53002CBB71 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		5FFDBF0814EF2A98002CBB71 /* Icon-iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-iPad.png"; sourceTree = "<group>"; };
+		5FFDBF0A14EF2ED9002CBB71 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		5FFDBF1214F058F6002CBB71 /* Touchposé.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Touchposé.png"; sourceTree = "<group>"; };
+		5FFDBF1414F05A6D002CBB71 /* Touchposé@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Touchposé@2x.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5FFDBED114EEEAAB002CBB71 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FFDBED914EEEAAB002CBB71 /* UIKit.framework in Frameworks */,
+				5FFDBEDB14EEEAAB002CBB71 /* Foundation.framework in Frameworks */,
+				5FFDBEDD14EEEAAB002CBB71 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5FFDBEC914EEEAAB002CBB71 = {
+			isa = PBXGroup;
+			children = (
+				5FFDBF1F14F06721002CBB71 /* Resources */,
+				5FFDBEDE14EEEAAB002CBB71 /* Source */,
+				5FFDBED714EEEAAB002CBB71 /* Frameworks */,
+				5FFDBED514EEEAAB002CBB71 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5FFDBED514EEEAAB002CBB71 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5FFDBED414EEEAAB002CBB71 /* Touchposé.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5FFDBED714EEEAAB002CBB71 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5FFDBED814EEEAAB002CBB71 /* UIKit.framework */,
+				5FFDBEDA14EEEAAB002CBB71 /* Foundation.framework */,
+				5FFDBEDC14EEEAAB002CBB71 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5FFDBEDE14EEEAAB002CBB71 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				5FFDBEE714EEEAAB002CBB71 /* QAppDelegate.h */,
+				5FFDBEE814EEEAAB002CBB71 /* QAppDelegate.m */,
+				5FFDBEFD14EEF737002CBB71 /* QTouchposeApplication.h */,
+				5FFDBEFE14EEF737002CBB71 /* QTouchposeApplication.m */,
+				5FFDBEEA14EEEAAB002CBB71 /* QViewController.h */,
+				5FFDBEEB14EEEAAB002CBB71 /* QViewController.m */,
+				5FFDBEDF14EEEAAB002CBB71 /* Supporting Files */,
+			);
+			path = Source;
+			sourceTree = SOURCE_ROOT;
+		};
+		5FFDBEDF14EEEAAB002CBB71 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5FFDBEE114EEEAAB002CBB71 /* InfoPlist.strings */,
+				5FFDBEE414EEEAAB002CBB71 /* main.m */,
+				5FFDBEE014EEEAAB002CBB71 /* Touchpose-Info.plist */,
+				5FFDBEE614EEEAAB002CBB71 /* Touchpose-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5FFDBF1F14F06721002CBB71 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5FFDBF0814EF2A98002CBB71 /* Icon-iPad.png */,
+				5FFDBF0614EF2A53002CBB71 /* Icon.png */,
+				5FFDBF0A14EF2ED9002CBB71 /* Icon@2x.png */,
+				5FFDBF1214F058F6002CBB71 /* Touchposé.png */,
+				5FFDBF1414F05A6D002CBB71 /* Touchposé@2x.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5FFDBED314EEEAAB002CBB71 /* Touchposé */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5FFDBEF514EEEAAB002CBB71 /* Build configuration list for PBXNativeTarget "Touchposé" */;
+			buildPhases = (
+				5FFDBED014EEEAAB002CBB71 /* Sources */,
+				5FFDBED114EEEAAB002CBB71 /* Frameworks */,
+				5FFDBED214EEEAAB002CBB71 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Touchposé";
+			productName = Touchpose;
+			productReference = 5FFDBED414EEEAAB002CBB71 /* Touchposé.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5FFDBECB14EEEAAB002CBB71 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = Q;
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = "Reaction Software Inc.";
+			};
+			buildConfigurationList = 5FFDBECE14EEEAAB002CBB71 /* Build configuration list for PBXProject "Touchpose" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5FFDBEC914EEEAAB002CBB71;
+			productRefGroup = 5FFDBED514EEEAAB002CBB71 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5FFDBED314EEEAAB002CBB71 /* Touchposé */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5FFDBED214EEEAAB002CBB71 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FFDBEE314EEEAAB002CBB71 /* InfoPlist.strings in Resources */,
+				5FFDBF0714EF2A53002CBB71 /* Icon.png in Resources */,
+				5FFDBF0914EF2A98002CBB71 /* Icon-iPad.png in Resources */,
+				5FFDBF0B14EF2ED9002CBB71 /* Icon@2x.png in Resources */,
+				5FFDBF1314F058F6002CBB71 /* Touchposé.png in Resources */,
+				5FFDBF1514F05A6E002CBB71 /* Touchposé@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5FFDBED014EEEAAB002CBB71 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FFDBEE514EEEAAB002CBB71 /* main.m in Sources */,
+				5FFDBEE914EEEAAB002CBB71 /* QAppDelegate.m in Sources */,
+				5FFDBEEC14EEEAAB002CBB71 /* QViewController.m in Sources */,
+				5FFDBEFF14EEF737002CBB71 /* QTouchposeApplication.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		5FFDBEE114EEEAAB002CBB71 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5FFDBEE214EEEAAB002CBB71 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5FFDBEF314EEEAAB002CBB71 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5FFDBEF414EEEAAB002CBB71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5FFDBEF614EEEAAB002CBB71 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Source/Touchpose-Prefix.pch";
+				INFOPLIST_FILE = "Source/Touchpose-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		5FFDBEF714EEEAAB002CBB71 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Source/Touchpose-Prefix.pch";
+				INFOPLIST_FILE = "Source/Touchpose-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5FFDBECE14EEEAAB002CBB71 /* Build configuration list for PBXProject "Touchpose" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FFDBEF314EEEAAB002CBB71 /* Debug */,
+				5FFDBEF414EEEAAB002CBB71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5FFDBEF514EEEAAB002CBB71 /* Build configuration list for PBXNativeTarget "Touchposé" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FFDBEF614EEEAAB002CBB71 /* Debug */,
+				5FFDBEF714EEEAAB002CBB71 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5FFDBECB14EEEAAB002CBB71 /* Project object */;
+}
