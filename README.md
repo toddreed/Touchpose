@@ -43,14 +43,24 @@ QTouchposeApplication to YES.
 
 ## Known Issues
 
- There are currently a few known limitations of Touchposé: it doesn’t
-work correctly with action sheets, alerts, or the keyboard. The issue
-is that these views are not added to the main window and end up on top
-of Touchposé’s overlay view thus obscuring the rendering of the touch
-events. For the keyboard, this isn’t too significant, because the
-keyboard already has a visual effect indicating where touches
-occur. I’d love to hear if there’s a way to get this working with
-alerts and action sheets.
+- Touchposé doesn’t work correctly with action sheets, alerts, or the
+  keyboard. The issue is that these views are not added to the main
+  window and end up on top of Touchposé’s overlay view thus obscuring
+  the rendering of the touch events. For the keyboard, this isn’t too
+  significant, because the keyboard already has a visual effect
+  indicating where touches occur. I’d love to hear if there’s a way to
+  get this working with alerts and action sheets.
+
+- When Touchposé is enabled and the keyboard is displayed, the
+  keyboard performance is severely impacted. Because of this,
+  Touchposé is automatically disabled when the keyboard is shown and
+  renabled when the keyboard is hidden.
+
+- The finger touch views are not always removed when a touch
+  ends. This appears to be caused by a bug in iOS: we don't get
+  notified of all `UITouch` instances ending. See
+  [here](https://discussions.apple.com/thread/1507669?start=0&tstart=0)
+  for a discussion of this issue.
 
 ## License
 

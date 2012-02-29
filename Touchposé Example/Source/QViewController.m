@@ -24,9 +24,18 @@
 
 - (void)loadView
 {
+#if 0
+    NSBundle *bundle = [NSBundle mainBundle];
+    QPDFView *view = [[[QPDFView alloc] initWithFrame:CGRectZero] autorelease];
+    view.backgroundColor = [UIColor whiteColor];
+    view.PDFURL = [NSURL fileURLWithPath:[bundle pathForResource:@"Touchposé" ofType:@"pdf"]];
+    view.contentGravity = QContentGravityResizeAspect;
+#else
     UIImageView *view = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Touchposé"]] autorelease];
     view.backgroundColor = [UIColor whiteColor];
     view.contentMode = UIViewContentModeCenter;
+#endif
+    //view.PDFURL = [NSURL fileURLWithPath:[bundle pathForResource:@"todd2" ofType:@"pdf"]];
     self.view = view;
 }
 

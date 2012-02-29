@@ -22,6 +22,8 @@
 - (void)applicationDidFinishLaunching:(NSNotification *)notification;
 - (void)screenDidConnectNotification:(NSNotification *)notification;
 - (void)screenDidDisonnectNotification:(NSNotification *)notification;
+- (void)keyboardDidShowNotification:(NSNotification *)notification;
+- (void)keyboardDidHideNotification:(NSNotification *)notification;
 - (BOOL)hasMirroredScreen;
 - (void)bringTouchViewToFront;
 
@@ -57,6 +59,8 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(screenDidConnectNotification:) name:UIScreenDidConnectNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(screenDidDisonnectNotification:) name:UIScreenDidDisconnectNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShowNotification:) name:UIKeyboardDidShowNotification object:nil];        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHideNotification:) name:UIKeyboardDidHideNotification object:nil];        
         _touchDictionary = CFDictionaryCreateMutable(NULL, 10, NULL, NULL);
         _touchHue = 0.55f;
         _alwaysShowTouches = NO;
@@ -99,18 +103,52 @@
     return [view autorelease];
 }
 
+- (void)removeTouchesActiveTouches:(NSSet *)activeTouches
+{
+    CFIndex count = CFDictionaryGetCount(_touchDictionary);
+    UITouch **keys = alloca(sizeof(UITouch *)*count);
+    UIView **values = alloca(sizeof(UIView *)*count);
+    CFDictionaryGetKeysAndValues(_touchDictionary, (const void **)keys, (const void **)values);
+    for (NSUInteger i = 0; i < count; ++i)
+    {
+        UITouch *touch = keys[i];
+
+        if (activeTouches == nil || ![activeTouches containsObject:touch])
+        {
+            UIView *view = values[i];
+            [touch release];
+            CFDictionaryRemoveValue(_touchDictionary, touch);
+            [UIView animateWithDuration:0.5f animations:^{ view.alpha = 0.0f; } completion:^(BOOL completed){ [view removeFromSuperview]; }];
+        }
+    }
+}
+
 - (void)updateTouches:(NSSet *)touches
 {
-    NSMutableSet *activeTouches = [[NSMutableSet alloc] init];
-
     for (UITouch *touch in touches)
     {
         CGPoint point = [touch locationInView:_touchView];
-
-        if (!(touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded))
+        UIView *fingerView = (UIView *)CFDictionaryGetValue(_touchDictionary, touch);
+        
+        if (touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded)
         {
-            UIView *fingerView = (UIView *)CFDictionaryGetValue(_touchDictionary, touch);
-
+            // Note that there seems to be a bug in iOS: we won't observe all UITouches
+            // in the UITouchPhaseEnded phase, resulting in some finger views being left
+            // on the screen when they shouldn't be. See
+            // https://discussions.apple.com/thread/1507669?start=0&tstart=0 for other's
+            // comments about this issue. No workaround is implemented here.
+            
+            
+            if (fingerView != NULL)
+            {
+                // Remove the touch from the 
+                [touch release];
+                CFDictionaryRemoveValue(_touchDictionary, touch);
+                [UIView animateWithDuration:0.5f animations:^{ fingerView.alpha = 0.0f; } completion:^(BOOL completed){ [fingerView removeFromSuperview]; }];
+            }
+        }
+        else
+        {
             if (fingerView == NULL)
             {
                 fingerView = [self fingerViewAtPoint:point];
@@ -122,33 +160,10 @@
             {
                 fingerView.center = point;
             }
-            [activeTouches addObject:touch];
-        }
-
-    }
-
-    // Remove inactive finger views
-    CFIndex count = CFDictionaryGetCount(_touchDictionary);
-    if (count != [activeTouches count])
-    {
-        UITouch **keys = alloca(sizeof(UITouch *)*count);
-        UIView **values = alloca(sizeof(UIView *)*count);
-        CFDictionaryGetKeysAndValues(_touchDictionary, (const void **)keys, (const void **)values);
-        NSUInteger itemCount = CFDictionaryGetCount(_touchDictionary);
-        for (NSUInteger i = 0; i < itemCount; ++i)
-        {
-            if (![activeTouches containsObject:keys[i]])
-            {
-                UITouch *touch = keys[i];
-                UIView *view = values[i];
-
-                [touch release];
-                CFDictionaryRemoveValue(_touchDictionary, touch);
-                [UIView animateWithDuration:0.5f animations:^{ view.alpha = 0.0f; } completion:^(BOOL completed){ [view removeFromSuperview]; }];
-            }
         }
     }
-    [activeTouches release];
+
+    [self removeTouchesActiveTouches:touches];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
@@ -162,6 +177,16 @@
 }
 
 - (void)screenDidDisonnectNotification:(NSNotification *)notification
+{
+    self.showTouches = _alwaysShowTouches || [self hasMirroredScreen];
+}
+
+- (void)keyboardDidShowNotification:(NSNotification *)notification
+{
+    self.showTouches = NO;
+}
+
+- (void)keyboardDidHideNotification:(NSNotification *)notification
 {
     self.showTouches = _alwaysShowTouches || [self hasMirroredScreen];
 }
@@ -207,6 +232,7 @@
     }
     else
     {
+        [self removeTouchesActiveTouches:nil];
         if (_touchView)
         {
             [_touchView removeFromSuperview];
