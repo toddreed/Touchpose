@@ -22,7 +22,7 @@ view remains the top-most view.
 
 To use Touchposé with an app:
 
-- Use `UITouchposeApplication` instead of UIApplication. This is done by specifying the application class in UIApplicationMain:
+- Use `QTouchposeApplication` instead of UIApplication. This is done by specifying the application class in UIApplicationMain:
 
         int main(int argc, char *argv[])
         {
@@ -34,7 +34,7 @@ To use Touchposé with an app:
             }
         }
 
-- Use UITouchposeWindow instead of UIWindow when creating your main window. This might be done in code (typcially ‑application:didFinishLaunchingWithOptions:), or in a nib file.
+- Use QTouchposeWindow instead of UIWindow when creating your main window. This might be done in code (typcially ‑application:didFinishLaunchingWithOptions:), or in a nib file.
 
 No other steps are needed. By default, touch events are only displayed
 when actually connected to an external device. If you want to always
@@ -60,7 +60,8 @@ QTouchposeApplication to YES.
   ends. This appears to be caused by a bug in iOS: we don't get
   notified of all `UITouch` instances ending. See
   [here](https://discussions.apple.com/thread/1507669?start=0&tstart=0)
-  for a discussion of this issue.
+  for a discussion of this issue. I haven't investigated this issue
+  extensively—it may only occur on versions of iOS prior to 5.
 
 ## License
 
