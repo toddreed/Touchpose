@@ -9,16 +9,13 @@ semi-transparent circles to be rendered on the overlay--an essential
 tool when demoing an app with a projector (with an iPad 2 or iPhone
 4S).
 
-To use Touchposé in your own app, copy the `QTouchposeApplication` and
-`QTouchposeWindow` classes to your project.
+To use Touchposé in your own app, copy the `QTouchposeApplication`
+class to your project.
 
-Touchposé should work for most apps. It’s implemented by two classes:
-`QTouchposeApplication`, a `UIApplication` subclass; and
-`QTouchposeWindow`, a `UIWindow` subclass. `QTouchApplication`
+Touchposé should work for most apps. It’s implemented by a single
+class: `QTouchposeApplication`, a `UIApplication` subclass which
 overrides `‑sendEvent:` and is responsible for rendering touches on
-the overlay view. `QTouchposeWindow` should be used as the app’s main
-window; it overrides `‑didAddSubview:` and ensures that the overlay
-view remains the top-most view.
+the overlay view.
 
 To use Touchposé with an app:
 
@@ -34,22 +31,12 @@ To use Touchposé with an app:
             }
         }
 
-- Use QTouchposeWindow instead of UIWindow when creating your main window. This might be done in code (typcially ‑application:didFinishLaunchingWithOptions:), or in a nib file.
-
 No other steps are needed. By default, touch events are only displayed
 when actually connected to an external device. If you want to always
 show touch events, set the alwaysShowTouches property of
 QTouchposeApplication to YES.
 
 ## Known Issues
-
-- Touchposé doesn’t work correctly with action sheets, alerts, or the
-  keyboard. The issue is that these views are not added to the main
-  window and end up on top of Touchposé’s overlay view thus obscuring
-  the rendering of the touch events. For the keyboard, this isn’t too
-  significant, because the keyboard already has a visual effect
-  indicating where touches occur. I’d love to hear if there’s a way to
-  get this working with alerts and action sheets.
 
 - When Touchposé is enabled and the keyboard is displayed, the
   keyboard performance is severely impacted. Because of this,

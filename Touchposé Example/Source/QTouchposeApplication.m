@@ -29,17 +29,6 @@
 
 @end
 
-@implementation QTouchposeWindow
-
-- (void)didAddSubview:(UIView *)subview
-{
-    // Move the touch view to the front
-    QTouchposeApplication *application = (QTouchposeApplication *)[UIApplication sharedApplication];
-    [application bringTouchViewToFront];
-}
-
-@end
-
 @implementation QTouchposeApplication
 {
     // Dictionary of touches being displayed. Keys are UITouch pointers and values are UIView pointers.
@@ -64,6 +53,7 @@
         _touchDictionary = CFDictionaryCreateMutable(NULL, 10, NULL, NULL);
         _touchHue = 0.55f;
         _alwaysShowTouches = NO;
+        [self bringTouchViewToFront];
     }
     return self;
 }
@@ -191,10 +181,40 @@
     self.showTouches = _alwaysShowTouches || [self hasMirroredScreen];
 }
 
+- (UIView *)frontView:(UIView *)view
+{
+    if ([view isKindOfClass:[UIActionSheet class]] || [view isKindOfClass:[UIAlertView class]])
+    {
+        return view;
+    }
+    
+    NSArray *subviews = [view subviews];
+    if ([subviews count] > 0)
+    {
+        for (UIView *subview in subviews)
+        {
+            return [self frontView:subview];
+        }
+    }
+    else
+    {
+        NSArray *siblings = [[view superview] subviews];
+        NSUInteger viewIndex = [siblings indexOfObject:view];
+        if (siblings && ((viewIndex + 1) < [siblings count]))
+        {
+            return [self frontView:[siblings objectAtIndex:viewIndex + 1]];
+        }
+    }
+    
+    return nil;
+}
+
 - (void)bringTouchViewToFront
 {
-    UIWindow *window = [self.windows objectAtIndex:0];
-    [window bringSubviewToFront:_touchView];
+    UIWindow *backWindow = [self.windows count] > 0 ? [self.windows objectAtIndex:0] : nil;
+    UIView *frontView = [self frontView:[self.windows lastObject]];
+    [frontView ?: backWindow addSubview:_touchView];
+    [self performSelector:_cmd withObject:nil afterDelay:0.1];
 }
 
 - (BOOL)hasMirroredScreen

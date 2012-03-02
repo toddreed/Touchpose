@@ -15,9 +15,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface QTouchposeWindow: UIWindow
-@end
-
 @interface QTouchposeApplication : UIApplication
 
 @property (nonatomic, assign) CGFloat touchHue;
