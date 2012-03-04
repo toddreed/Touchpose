@@ -16,6 +16,9 @@
 #import "QTouchposeApplication.h"
 #import <QuartzCore/QuartzCore.h>
 
+#import <objc/runtime.h> 
+
+
 @interface QTouchposeApplication ()
 
 - (void)updateTouches:(NSSet *)touches;
@@ -25,20 +28,89 @@
 - (void)keyboardDidShowNotification:(NSNotification *)notification;
 - (void)keyboardDidHideNotification:(NSNotification *)notification;
 - (BOOL)hasMirroredScreen;
+- (void)keyWindowChanged:(UIWindow *)window;
 - (void)bringTouchViewToFront;
 
 @end
 
-@implementation QTouchposeWindow
+/// The QTouchposeTouchesView is an overlay view that is used as the superview for
+/// QTouchposeFingerView instances.
+@interface QTouchposeTouchesView : UIView
+@end
 
-- (void)didAddSubview:(UIView *)subview
+@implementation QTouchposeTouchesView
+@end
+
+
+/// The QTouchposeFingerView is used to render a finger touches on the screen.
+@interface QTouchposeFingerView : UIView
+
+- (id)initWithPoint:(CGPoint)point hue:(CGFloat)hue;
+
+@end
+
+@implementation QTouchposeFingerView
+
+#pragma mark - UIView
+
+- (id)initWithFrame:(CGRect)frame
 {
-    // Move the touch view to the front
-    QTouchposeApplication *application = (QTouchposeApplication *)[UIApplication sharedApplication];
-    [application bringTouchViewToFront];
+    return [self initWithPoint:(CGPoint){ 0.0f, 0.0f } hue:0.0f];
+}
+
+#pragma mark - QTouchposeFingerView
+
+- (id)initWithPoint:(CGPoint)point hue:(CGFloat)hue
+{
+    const CGFloat kFingerRadius = 22.0f;
+    
+    if ((self = [super initWithFrame:CGRectMake(point.x-kFingerRadius, point.y-kFingerRadius, 2*kFingerRadius, 2*kFingerRadius)]))
+    {
+        self.opaque = NO;
+        self.layer.borderColor = [UIColor colorWithHue:hue saturation:0.5f brightness:0.5f alpha:0.6f].CGColor;
+        self.layer.cornerRadius = kFingerRadius;
+        self.layer.borderWidth = 2.0f;
+        self.layer.backgroundColor = [UIColor colorWithHue:hue saturation:0.5f brightness:0.5f alpha:0.4f].CGColor;
+    }
+    return self;
 }
 
 @end
+
+IMP SwizzleMethod(Class c, SEL sel, IMP newImplementation)
+{
+    Method method = class_getInstanceMethod(c, sel);
+    IMP originalImplementation = method_getImplementation(method);
+    if (!class_addMethod(c, sel, newImplementation, method_getTypeEncoding(method)))
+        method_setImplementation(method, newImplementation);
+    return originalImplementation;
+}
+
+static void (*UIWindow_orig_becomeKeyWindow)(UIWindow *, SEL);
+
+// This method replaces -[UIWindow becomeKeyWindow] (but calls the original -becomeKeyWindow). This
+// is used to move the overlay to the current key window.
+static void UIWindow_new_becomeKeyWindow(UIWindow *window, SEL _cmd)
+{
+    QTouchposeApplication *application = (QTouchposeApplication *)[UIApplication sharedApplication];
+    [application keyWindowChanged:window];
+    (*UIWindow_orig_becomeKeyWindow)(window, _cmd);
+}
+
+static void (*UIWindow_orig_didAddSubview)(UIWindow *, SEL, UIView *);
+
+// This method replaces -[UIWindow didAddSubview:] (but calls the original -didAddSubview:). This is
+// used to keep the overlay view the top-most view of the window.
+static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
+{
+    if (![view isKindOfClass:[QTouchposeFingerView class]])
+    {
+        QTouchposeApplication *application = (QTouchposeApplication *)[UIApplication sharedApplication];
+        [application bringTouchViewToFront];
+    }
+    (*UIWindow_orig_didAddSubview)(window, _cmd, view);
+}
+
 
 @implementation QTouchposeApplication
 {
@@ -48,9 +120,16 @@
     CGFloat _touchHue;
     BOOL _showTouches;
     BOOL _alwaysShowTouches;
+    BOOL _showTouchesWhenKeyboardShown;
 }
 
 #pragma mark - NSObject
+
++ (NSUInteger)majorSystemVersion
+{
+    NSArray *versionComponents = [[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."];
+    return [[versionComponents objectAtIndex:0] integerValue];
+}
 
 - (id)init
 {
@@ -64,6 +143,11 @@
         _touchDictionary = CFDictionaryCreateMutable(NULL, 10, NULL, NULL);
         _touchHue = 0.55f;
         _alwaysShowTouches = NO;
+        
+        // In my experience, the keyboard performance is crippled when showing touches on a
+        // device running iOS < 5, so by default, disable touches when the keyboard is
+        // present.
+        _showTouchesWhenKeyboardShown = [[self class] majorSystemVersion] >= 5;
     }
     return self;
 }
@@ -91,17 +175,7 @@
 @synthesize touchHue = _touchHue;
 @synthesize showTouches = _showTouches;
 @synthesize alwaysShowTouches = _alwaysShowTouches;
-
-- (UIView *)fingerViewAtPoint:(CGPoint)point
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(point.x-22.0f, point.y-22.0f, 44.0f, 44.0f)];
-    view.opaque = NO;
-    view.layer.borderColor = [UIColor colorWithHue:_touchHue saturation:0.5f brightness:0.5f alpha:0.6f].CGColor;
-    view.layer.cornerRadius = 22.0f;
-    view.layer.borderWidth = 2.0f;
-    view.layer.backgroundColor = [UIColor colorWithHue:_touchHue saturation:0.5f brightness:0.5f alpha:0.4f].CGColor;
-    return [view autorelease];
-}
+@synthesize showTouchesWhenKeyboardShown = _showTouchesWhenKeyboardShown;
 
 - (void)removeTouchesActiveTouches:(NSSet *)activeTouches
 {
@@ -109,7 +183,7 @@
     UITouch **keys = alloca(sizeof(UITouch *)*count);
     UIView **values = alloca(sizeof(UIView *)*count);
     CFDictionaryGetKeysAndValues(_touchDictionary, (const void **)keys, (const void **)values);
-    for (NSUInteger i = 0; i < count; ++i)
+    for (CFIndex i = 0; i < count; ++i)
     {
         UITouch *touch = keys[i];
 
@@ -151,10 +225,11 @@
         {
             if (fingerView == NULL)
             {
-                fingerView = [self fingerViewAtPoint:point];
+                fingerView = [[QTouchposeFingerView alloc] initWithPoint:point hue:_touchHue];
                 [_touchView addSubview:fingerView];
                 [touch retain];
                 CFDictionarySetValue(_touchDictionary, touch, fingerView);
+                [fingerView release];
             }
             else
             {
@@ -168,6 +243,11 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
+    // We intercept calls to -becomeKeyWindow and -didAddSubview of UIWindow to manage the
+    // overlay view QTouchposeTouchesView and ensure it remains the top-most window.
+    UIWindow_orig_didAddSubview = (void (*)(UIWindow *, SEL, UIView *))SwizzleMethod([UIWindow class], @selector(didAddSubview:), (IMP)UIWindow_new_didAddSubview);
+    UIWindow_orig_becomeKeyWindow = (void (*)(UIWindow *, SEL))SwizzleMethod([UIWindow class], @selector(becomeKeyWindow), (IMP)UIWindow_new_becomeKeyWindow);
+
     self.showTouches = _alwaysShowTouches || [self hasMirroredScreen];
 }
 
@@ -183,7 +263,7 @@
 
 - (void)keyboardDidShowNotification:(NSNotification *)notification
 {
-    self.showTouches = NO;
+    self.showTouches = _showTouchesWhenKeyboardShown && (_alwaysShowTouches || [self hasMirroredScreen]);
 }
 
 - (void)keyboardDidHideNotification:(NSNotification *)notification
@@ -191,10 +271,16 @@
     self.showTouches = _alwaysShowTouches || [self hasMirroredScreen];
 }
 
+- (void)keyWindowChanged:(UIWindow *)window
+{
+    if (_touchView)
+        [window addSubview:_touchView];
+}
+
 - (void)bringTouchViewToFront
 {
-    UIWindow *window = [self.windows objectAtIndex:0];
-    [window bringSubviewToFront:_touchView];
+    if (_touchView)
+        [_touchView.window bringSubviewToFront:_touchView];
 }
 
 - (BOOL)hasMirroredScreen
@@ -220,10 +306,10 @@
 {
     if (showTouches)
     {
-        if (_touchView == nil)
+        if (_touchView == nil && self.keyWindow)
         {
-            UIWindow *window = [self.windows objectAtIndex:0];
-            _touchView = [[UIView alloc] initWithFrame:window.bounds];
+            UIWindow *window = self.keyWindow;
+            _touchView = [[QTouchposeFingerView alloc] initWithFrame:window.bounds];
             _touchView.backgroundColor = [UIColor clearColor];
             _touchView.opaque = NO;
             _touchView.userInteractionEnabled = NO;

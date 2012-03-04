@@ -9,20 +9,27 @@ semi-transparent circles to be rendered on the overlay--an essential
 tool when demoing an app with a projector (with an iPad 2 or iPhone
 4S).
 
-To use Touchposé in your own app, copy the `QTouchposeApplication` and
-`QTouchposeWindow` classes to your project.
+To use Touchposé in your own app, copy `QTouchposeApplication.m` and
+`QTouchposeApplication.h` from the example project to your project.
 
-Touchposé should work for most apps. It’s implemented by two classes:
-`QTouchposeApplication`, a `UIApplication` subclass; and
-`QTouchposeWindow`, a `UIWindow` subclass. `QTouchApplication`
-overrides `‑sendEvent:` and is responsible for rendering touches on
-the overlay view. `QTouchposeWindow` should be used as the app’s main
-window; it overrides `‑didAddSubview:` and ensures that the overlay
-view remains the top-most view.
+Touchposé should work for most apps (but read the caveat below). It’s
+implemented by a single public class, `QTouchposeApplication`, and
+several private classes.  `QTouchposeApplication` overrides
+`‑sendEvent:` and is responsible for rendering touches on the overlay
+view.  There are some gnarly implementation bits to ensure that the
+overlay view remains the top-most view in the view hierarchy. This is
+achieved by intercepting calls to `-didAddSubview:` and
+`-becomeKeyWindow` using _method swizzling_. Method swizzling is
+supported by the Objective-C runtime, but it’s usually considered a
+dangerous practice, especially when done on classes you don’t
+own. Furthermore, it only works if you’re the only one swizzling—if
+some other class is also swizzling methods on the same class, things
+may go amok. My recommendation is to only use this code in private
+builds when you want to demo your app to an audience on a projector.
 
-To use Touchposé with an app:
-
-- Use `QTouchposeApplication` instead of UIApplication. This is done by specifying the application class in UIApplicationMain:
+To use Touchposé with an app, indicate that `QTouchposeApplication`
+should be used instead of `UIApplication`. This is done by specifying
+the application class in UIApplicationMain:
 
         int main(int argc, char *argv[])
         {
@@ -34,35 +41,33 @@ To use Touchposé with an app:
             }
         }
 
-- Use QTouchposeWindow instead of UIWindow when creating your main window. This might be done in code (typcially ‑application:didFinishLaunchingWithOptions:), or in a nib file.
-
-No other steps are needed. By default, touch events are only displayed
-when actually connected to an external device. If you want to always
-show touch events, set the alwaysShowTouches property of
-QTouchposeApplication to YES.
+That’s it; no other steps are needed. By default, touch events are
+only displayed when actually connected to an external device. If you
+want to always show touch events, set the `alwaysShowTouches` property
+of `QTouchposeApplication` to `YES`.
 
 ## Known Issues
 
-- Touchposé doesn’t work correctly with action sheets, alerts, or the
-  keyboard. The issue is that these views are not added to the main
-  window and end up on top of Touchposé’s overlay view thus obscuring
-  the rendering of the touch events. For the keyboard, this isn’t too
-  significant, because the keyboard already has a visual effect
-  indicating where touches occur. I’d love to hear if there’s a way to
-  get this working with alerts and action sheets.
+- When an alert view is display, touches that are initiated outside
+  the alert view aren’t displayed. Touches inside the alert view are
+  displayed correctly (even if moved outside the alert view).
 
-- When Touchposé is enabled and the keyboard is displayed, the
-  keyboard performance is severely impacted. Because of this,
-  Touchposé is automatically disabled when the keyboard is shown and
-  renabled when the keyboard is hidden.
+- It seems that in iOS versions earlier than 5, Touchposé interferes
+  with the performance of the on-screen keyboard. As a workaround,
+  Touchposé is automatically disabled when the keyboard is shown if
+  running a version earlier than iOS 5. Note that touches are never
+  displayed on the keyboard, even on iOS 5. This isn’t too
+  significant, because the keyboard already has a visual effect
+  indicating where touches occur.
 
 - The finger touch views are not always removed when a touch
   ends. This appears to be caused by a bug in iOS: we don't get
   notified of all `UITouch` instances ending. See
   [here](https://discussions.apple.com/thread/1507669?start=0&tstart=0)
   for a discussion of this issue. I haven't investigated this issue
-  extensively—it may only occur on versions of iOS prior to 5.
+  extensively—it seems to only occur on versions of iOS prior to 5.
 
 ## License
 
-Touchposé is licensed under the Apache License, Version 2.0.
+Touchposé is licensed under the
+[Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
