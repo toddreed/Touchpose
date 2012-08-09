@@ -309,7 +309,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         if (_touchView == nil && self.keyWindow)
         {
             UIWindow *window = self.keyWindow;
-            _touchView = [[QTouchposeFingerView alloc] initWithFrame:window.bounds];
+            _touchView = [[QTouchposeTouchesView alloc] initWithFrame:window.bounds];
             _touchView.backgroundColor = [UIColor clearColor];
             _touchView.opaque = NO;
             _touchView.userInteractionEnabled = NO;
