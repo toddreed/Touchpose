@@ -18,29 +18,13 @@
 
 @implementation QAppDelegate
 
-#pragma mark - NSObject
-
-- (void)dealloc
-{
-    [_window release];
-    [_viewController release];
-    [super dealloc];
-}
-
-
-#pragma mark - QAppDelegate
-
-@synthesize window = _window;
-@synthesize viewController = _viewController;
-
-
 #pragma mark UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    self.viewController = [[[QViewController alloc] initWithNibName:nil bundle:nil] autorelease];
+    self.viewController = [[QViewController alloc] initWithNibName:nil bundle:nil];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
 

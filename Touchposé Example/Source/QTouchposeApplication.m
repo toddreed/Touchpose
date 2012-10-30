@@ -114,7 +114,12 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
 
 @implementation QTouchposeApplication
 {
-    // Dictionary of touches being displayed. Keys are UITouch pointers and values are UIView pointers.
+    // Dictionary of touches being displayed. Keys are UITouch pointers and values are UIView
+    // pointers that represent that visually represent the touch on-screen. (A
+    // CFMutableDictionaryRef is used because NSDictionary requries its keys to conform to the
+    // NSCopying protocol and UITouch doesn't. We don't need to retain either the UITouch or
+    // UIView instances because UITouch objects are persistent throughout a multi-touch
+    // sequence, and the UIViews are retained by their superview.)
     CFMutableDictionaryRef _touchDictionary;
     UIView *_touchView;
     CGFloat _touchHue;
@@ -156,8 +161,6 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     CFRelease(_touchDictionary);
-    [_touchView release];
-    [super dealloc];
 }
 
 
@@ -180,18 +183,17 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
 - (void)removeTouchesActiveTouches:(NSSet *)activeTouches
 {
     CFIndex count = CFDictionaryGetCount(_touchDictionary);
-    UITouch **keys = alloca(sizeof(UITouch *)*count);
-    UIView **values = alloca(sizeof(UIView *)*count);
-    CFDictionaryGetKeysAndValues(_touchDictionary, (const void **)keys, (const void **)values);
+    void const * keys[count];
+    void const * values[count];
+    CFDictionaryGetKeysAndValues(_touchDictionary, keys, values);
     for (CFIndex i = 0; i < count; ++i)
     {
-        UITouch *touch = keys[i];
+        UITouch *touch = (__bridge UITouch *)keys[i];
 
         if (activeTouches == nil || ![activeTouches containsObject:touch])
         {
-            UIView *view = values[i];
-            [touch release];
-            CFDictionaryRemoveValue(_touchDictionary, touch);
+            UIView *view = (__bridge UIView *)values[i];
+            CFDictionaryRemoveValue(_touchDictionary, (__bridge const void *)(touch));
             [UIView animateWithDuration:0.5f animations:^{ view.alpha = 0.0f; } completion:^(BOOL completed){ [view removeFromSuperview]; }];
         }
     }
@@ -202,7 +204,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
     for (UITouch *touch in touches)
     {
         CGPoint point = [touch locationInView:_touchView];
-        UIView *fingerView = (UIView *)CFDictionaryGetValue(_touchDictionary, touch);
+        UIView *fingerView = (UIView *)CFDictionaryGetValue(_touchDictionary, (__bridge const void *)(touch));
         
         if (touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded)
         {
@@ -216,8 +218,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
             if (fingerView != NULL)
             {
                 // Remove the touch from the 
-                [touch release];
-                CFDictionaryRemoveValue(_touchDictionary, touch);
+                CFDictionaryRemoveValue(_touchDictionary, (__bridge const void *)(touch));
                 [UIView animateWithDuration:0.5f animations:^{ fingerView.alpha = 0.0f; } completion:^(BOOL completed){ [fingerView removeFromSuperview]; }];
             }
         }
@@ -227,9 +228,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
             {
                 fingerView = [[QTouchposeFingerView alloc] initWithPoint:point hue:_touchHue];
                 [_touchView addSubview:fingerView];
-                [touch retain];
-                CFDictionarySetValue(_touchDictionary, touch, fingerView);
-                [fingerView release];
+                CFDictionarySetValue(_touchDictionary, (__bridge const void *)(touch), (__bridge const void *)(fingerView));
             }
             else
             {
@@ -322,7 +321,6 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         if (_touchView)
         {
             [_touchView removeFromSuperview];
-            [_touchView release];
             _touchView = nil;
         }
     }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F022762163F72CE00CF35BD /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F022761163F72CE00CF35BD /* Default-568h@2x.png */; };
 		5FFDBED914EEEAAB002CBB71 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBED814EEEAAB002CBB71 /* UIKit.framework */; };
 		5FFDBEDB14EEEAAB002CBB71 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBEDA14EEEAAB002CBB71 /* Foundation.framework */; };
 		5FFDBEDD14EEEAAB002CBB71 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBEDC14EEEAAB002CBB71 /* CoreGraphics.framework */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5F022761163F72CE00CF35BD /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		5FFDBED414EEEAAB002CBB71 /* Touchposé.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Touchposé.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FFDBED814EEEAAB002CBB71 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5FFDBEDA14EEEAAB002CBB71 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -114,6 +116,7 @@
 		5FFDBF1F14F06721002CBB71 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				5F022761163F72CE00CF35BD /* Default-568h@2x.png */,
 				5FFDBF0814EF2A98002CBB71 /* Icon-iPad.png */,
 				5FFDBF0614EF2A53002CBB71 /* Icon.png */,
 				5FFDBF0A14EF2ED9002CBB71 /* Icon@2x.png */,
@@ -181,6 +184,7 @@
 				5FFDBF0B14EF2ED9002CBB71 /* Icon@2x.png in Resources */,
 				5FFDBF1314F058F6002CBB71 /* Touchposé.png in Resources */,
 				5FFDBF1514F05A6E002CBB71 /* Touchposé@2x.png in Resources */,
+				5F022762163F72CE00CF35BD /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -217,6 +221,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -242,6 +247,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
