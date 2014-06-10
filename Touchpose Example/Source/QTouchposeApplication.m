@@ -168,9 +168,9 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
 
 - (void)sendEvent:(UIEvent *)event
 {
-    [super sendEvent:event];
     if (_showTouches)
         [self updateTouches:[event allTouches]];
+    [super sendEvent:event];
 }
 
 #pragma mark - QApplication
