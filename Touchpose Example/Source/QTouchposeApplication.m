@@ -58,6 +58,16 @@
     return [self initWithPoint:(CGPoint){ 0.0f, 0.0f } hue:0.0f];
 }
 
+- (void)removeFromSuperview
+{
+    [UIView animateWithDuration:0.5f animations:^{
+        self.alpha = 0.0f;
+        self.layer.transform = CATransform3DMakeScale(1.5, 1.5, 1);
+    } completion:^(BOOL completed){
+        [super removeFromSuperview];
+    }];
+}
+
 #pragma mark - QTouchposeFingerView
 
 - (id)initWithPoint:(CGPoint)point hue:(CGFloat)hue
@@ -194,7 +204,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         {
             UIView *view = (__bridge UIView *)values[i];
             CFDictionaryRemoveValue(_touchDictionary, (__bridge const void *)(touch));
-            [UIView animateWithDuration:0.5f animations:^{ view.alpha = 0.0f; } completion:^(BOOL completed){ [view removeFromSuperview]; }];
+            [view removeFromSuperview];
         }
     }
 }
@@ -219,7 +229,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
             {
                 // Remove the touch from the 
                 CFDictionaryRemoveValue(_touchDictionary, (__bridge const void *)(touch));
-                [UIView animateWithDuration:0.5f animations:^{ fingerView.alpha = 0.0f; } completion:^(BOOL completed){ [fingerView removeFromSuperview]; }];
+                [fingerView removeFromSuperview];
             }
         }
         else

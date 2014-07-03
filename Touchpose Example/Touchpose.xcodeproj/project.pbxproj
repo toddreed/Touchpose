@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F5750F31964D63700CF65DE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5750F21964D63700CF65DE /* QuartzCore.framework */; };
 		5FDDAAF0196510740030CC94 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5FDDAAEF196510740030CC94 /* Images.xcassets */; };
 		5FFDBED914EEEAAB002CBB71 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBED814EEEAAB002CBB71 /* UIKit.framework */; };
 		5FFDBEDB14EEEAAB002CBB71 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBEDA14EEEAAB002CBB71 /* Foundation.framework */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5F5750F21964D63700CF65DE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5FDDAAEF196510740030CC94 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		5FFDBED414EEEAAB002CBB71 /* Touchposé.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Touchposé.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FFDBED814EEEAAB002CBB71 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -72,6 +74,7 @@
 		5FFDBED714EEEAAB002CBB71 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5F5750F21964D63700CF65DE /* QuartzCore.framework */,
 				5FFDBED814EEEAAB002CBB71 /* UIKit.framework */,
 				5FFDBEDA14EEEAAB002CBB71 /* Foundation.framework */,
 				5FFDBEDC14EEEAAB002CBB71 /* CoreGraphics.framework */,
