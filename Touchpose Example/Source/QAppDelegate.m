@@ -31,6 +31,9 @@
     // For demo purposes, show the touches even when not mirroring to an external display.
     QTouchposeApplication *touchposeApplication = (QTouchposeApplication *)application;
     touchposeApplication.alwaysShowTouches = YES;
+    touchposeApplication.touchColor = [UIColor redColor];
+    touchposeApplication.touchEndAnimationDuration = 0.3f;
+    touchposeApplication.touchEndTransform = CATransform3DMakeScale(0.1, 0.1, 1);
 
     return YES;
 }
