@@ -45,27 +45,30 @@
 /// The QTouchposeFingerView is used to render a finger touches on the screen.
 @interface QTouchposeFingerView : UIView
 
-@property (nonatomic) CATransform3D touchEndTransform;
-@property (nonatomic) CGFloat touchEndAnimationDuration;
-
-- (id)initWithPoint:(CGPoint)point color:(UIColor*)color;
+- (id)initWithPoint:(CGPoint)point color:(UIColor *)color touchEndAnimationDuration:(NSTimeInterval)touchEndAnimationDuration touchEndTransform:(CATransform3D)touchEndTransform;
 
 @end
 
 @implementation QTouchposeFingerView
+{
+    CATransform3D _touchEndTransform;
+    CGFloat _touchEndAnimationDuration;
+}
 
 #pragma mark - UIView
 
 - (id)initWithFrame:(CGRect)frame
 {
-    return [self initWithPoint:(CGPoint){ 0.0f, 0.0f } color:[UIColor blackColor]];
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:[NSString stringWithFormat:@"-[%@ %@] not supported", NSStringFromClass([self class]), NSStringFromSelector(_cmd)]
+                                 userInfo:nil];
 }
 
 - (void)removeFromSuperview
 {
-    [UIView animateWithDuration:self.touchEndAnimationDuration animations:^{
+    [UIView animateWithDuration:_touchEndAnimationDuration animations:^{
         self.alpha = 0.0f;
-        self.layer.transform = self.touchEndTransform;
+        self.layer.transform = _touchEndTransform;
     } completion:^(BOOL completed){
         [super removeFromSuperview];
     }];
@@ -73,20 +76,20 @@
 
 #pragma mark - QTouchposeFingerView
 
-- (id)initWithPoint:(CGPoint)point color:(UIColor*)color
+- (id)initWithPoint:(CGPoint)point color:(UIColor *)color touchEndAnimationDuration:(NSTimeInterval)touchEndAnimationDuration touchEndTransform:(CATransform3D)touchEndTransform
 {
     const CGFloat kFingerRadius = 22.0f;
     
     if ((self = [super initWithFrame:CGRectMake(point.x-kFingerRadius, point.y-kFingerRadius, 2*kFingerRadius, 2*kFingerRadius)]))
     {
-        CGFloat origRed, origGreen, origBlue, origAlpha;
-        [color getRed:&origRed green:&origGreen blue:&origBlue alpha:&origAlpha];
-        
         self.opaque = NO;
-        self.layer.borderColor = [UIColor colorWithRed:origRed green:origGreen blue:origBlue alpha:0.6f].CGColor;
+        self.layer.borderColor = [color colorWithAlphaComponent:0.6f].CGColor;
         self.layer.cornerRadius = kFingerRadius;
         self.layer.borderWidth = 2.0f;
-        self.layer.backgroundColor = [UIColor colorWithRed:origRed green:origGreen blue:origBlue alpha:0.4f].CGColor;
+        self.layer.backgroundColor = [color colorWithAlphaComponent:0.4f].CGColor;
+
+        _touchEndAnimationDuration = touchEndAnimationDuration;
+        _touchEndTransform = touchEndTransform;
     }
     return self;
 }
@@ -165,7 +168,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHideNotification:) name:UIKeyboardDidHideNotification object:nil];        
         _touchDictionary = CFDictionaryCreateMutable(NULL, 10, NULL, NULL);
         _alwaysShowTouches = NO;
-        _touchColor = [UIColor blackColor];
+        _touchColor = [UIColor colorWithRed:0.251f green:0.424f blue:0.502f alpha:1.0f];
         _touchEndAnimationDuration = 0.5f;
         _touchEndTransform = CATransform3DMakeScale(1.5, 1.5, 1);
         
@@ -245,11 +248,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         {
             if (fingerView == NULL)
             {
-                QTouchposeFingerView *newFingerView = [[QTouchposeFingerView alloc] initWithPoint:point color:_touchColor];
-                newFingerView.touchEndAnimationDuration = _touchEndAnimationDuration;
-                newFingerView.touchEndTransform = _touchEndTransform;
-                
-                fingerView = newFingerView;
+                fingerView = [[QTouchposeFingerView alloc] initWithPoint:point color:_touchColor touchEndAnimationDuration:_touchEndAnimationDuration touchEndTransform:_touchEndTransform];
                 [_touchView addSubview:fingerView];
                 CFDictionarySetValue(_touchDictionary, (__bridge const void *)(touch), (__bridge const void *)(fingerView));
             }
