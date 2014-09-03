@@ -21,13 +21,6 @@
 
 @interface QTouchposeApplication ()
 
-- (void)updateTouches:(NSSet *)touches;
-- (void)applicationDidFinishLaunching:(NSNotification *)notification;
-- (void)screenDidConnectNotification:(NSNotification *)notification;
-- (void)screenDidDisonnectNotification:(NSNotification *)notification;
-- (void)keyboardDidShowNotification:(NSNotification *)notification;
-- (void)keyboardDidHideNotification:(NSNotification *)notification;
-- (BOOL)hasMirroredScreen;
 - (void)keyWindowChanged:(UIWindow *)window;
 - (void)bringTouchViewToFront;
 
@@ -141,12 +134,6 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
     // sequence, and the UIViews are retained by their superview.)
     CFMutableDictionaryRef _touchDictionary;
     UIView *_touchView;
-    BOOL _showTouches;
-    BOOL _alwaysShowTouches;
-    BOOL _showTouchesWhenKeyboardShown;
-    CGFloat _touchEndAnimationDuration;
-    CATransform3D _touchEndTransform;
-    UIColor *_touchColor;
 }
 
 #pragma mark - NSObject
@@ -197,10 +184,6 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
 }
 
 #pragma mark - QApplication
-
-@synthesize showTouches = _showTouches;
-@synthesize alwaysShowTouches = _alwaysShowTouches;
-@synthesize showTouchesWhenKeyboardShown = _showTouchesWhenKeyboardShown;
 
 - (void)removeTouchesActiveTouches:(NSSet *)activeTouches
 {

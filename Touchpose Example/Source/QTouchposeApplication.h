@@ -17,11 +17,11 @@
 
 @interface QTouchposeApplication : UIApplication
 
-@property (nonatomic, assign) BOOL showTouches;
-@property (nonatomic, assign) BOOL alwaysShowTouches;
-@property (nonatomic, assign) BOOL showTouchesWhenKeyboardShown;
-@property (nonatomic, assign) CGFloat touchEndAnimationDuration;
-@property (nonatomic, assign) CATransform3D touchEndTransform;
-@property (nonatomic) UIColor *touchColor;
+@property (nonatomic) BOOL showTouches;
+@property (nonatomic) BOOL alwaysShowTouches;
+@property (nonatomic) BOOL showTouchesWhenKeyboardShown;
+@property (nonatomic) CGFloat touchEndAnimationDuration;
+@property (nonatomic) CATransform3D touchEndTransform;
+@property (nonatomic, strong) UIColor *touchColor;
 
 @end
