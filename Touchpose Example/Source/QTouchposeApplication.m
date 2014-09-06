@@ -38,7 +38,12 @@
 /// The QTouchposeFingerView is used to render a finger touches on the screen.
 @interface QTouchposeFingerView : UIView
 
-- (id)initWithPoint:(CGPoint)point color:(UIColor *)color touchEndAnimationDuration:(NSTimeInterval)touchEndAnimationDuration touchEndTransform:(CATransform3D)touchEndTransform;
+- (id)initWithPoint:(CGPoint)point
+              color:(UIColor *)color
+touchEndAnimationDuration:(NSTimeInterval)touchEndAnimationDuration
+  touchEndTransform:(CATransform3D)touchEndTransform
+   customTouchImage:(UIImage *)customTouchImage
+   customTouchPoint:(CGPoint)customtouchPoint;
 
 @end
 
@@ -69,22 +74,49 @@
 
 #pragma mark - QTouchposeFingerView
 
-- (id)initWithPoint:(CGPoint)point color:(UIColor *)color touchEndAnimationDuration:(NSTimeInterval)touchEndAnimationDuration touchEndTransform:(CATransform3D)touchEndTransform
-{
-    const CGFloat kFingerRadius = 22.0f;
-    
-    if ((self = [super initWithFrame:CGRectMake(point.x-kFingerRadius, point.y-kFingerRadius, 2*kFingerRadius, 2*kFingerRadius)]))
-    {
-        self.opaque = NO;
-        self.layer.borderColor = [color colorWithAlphaComponent:0.6f].CGColor;
-        self.layer.cornerRadius = kFingerRadius;
-        self.layer.borderWidth = 2.0f;
-        self.layer.backgroundColor = [color colorWithAlphaComponent:0.4f].CGColor;
+- (id)initWithPoint:(CGPoint)point
+              color:(UIColor *)color
+touchEndAnimationDuration:(NSTimeInterval)touchEndAnimationDuration
+  touchEndTransform:(CATransform3D)touchEndTransform
+   customTouchImage:(UIImage *)customTouchImage
+   customTouchPoint:(CGPoint)customtouchPoint
 
-        _touchEndAnimationDuration = touchEndAnimationDuration;
-        _touchEndTransform = touchEndTransform;
+{
+    if (customTouchImage)
+    {        
+        CGRect frame = CGRectMake(point.x - customtouchPoint.x,
+                                  point.y - customtouchPoint.y,
+                                  customTouchImage.size.width,
+                                  customTouchImage.size.height);
+        
+        if (self = [super initWithFrame:frame])
+        {
+            self.opaque = NO;
+            
+            UIImageView *iv = [[UIImageView alloc] initWithImage:customTouchImage];
+            [self addSubview:iv];
+        }
+        
+        return self;
     }
-    return self;
+    else
+    {
+        const CGFloat kFingerRadius = 22.0f;
+        
+        if ((self = [super initWithFrame:CGRectMake(point.x-kFingerRadius, point.y-kFingerRadius, 2*kFingerRadius, 2*kFingerRadius)]))
+        {
+            self.opaque = NO;
+            self.layer.borderColor = [color colorWithAlphaComponent:0.6f].CGColor;
+            self.layer.cornerRadius = kFingerRadius;
+            self.layer.borderWidth = 2.0f;
+            self.layer.backgroundColor = [color colorWithAlphaComponent:0.4f].CGColor;
+
+            _touchEndAnimationDuration = touchEndAnimationDuration;
+            _touchEndTransform = touchEndTransform;
+        }
+        
+        return self;
+    }
 }
 
 @end
@@ -159,6 +191,9 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         _touchEndAnimationDuration = 0.5f;
         _touchEndTransform = CATransform3DMakeScale(1.5, 1.5, 1);
         
+        _customTouchImage = nil;
+        _customTouchPoint = CGPointZero;
+        
         // In my experience, the keyboard performance is crippled when showing touches on a
         // device running iOS < 5, so by default, disable touches when the keyboard is
         // present.
@@ -199,7 +234,19 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         {
             UIView *view = (__bridge UIView *)values[i];
             CFDictionaryRemoveValue(_touchDictionary, (__bridge const void *)(touch));
-            [view removeFromSuperview];
+            
+            if (self.customTouchImage)
+            {
+                [UIView animateWithDuration:0.5f animations:^{
+                    view.alpha = 0.0;
+                } completion:^(BOOL finished) {
+                    [view removeFromSuperview];
+                }];
+            }
+            else
+            {
+                [view removeFromSuperview];
+            }
         }
     }
 }
@@ -231,13 +278,29 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         {
             if (fingerView == NULL)
             {
-                fingerView = [[QTouchposeFingerView alloc] initWithPoint:point color:_touchColor touchEndAnimationDuration:_touchEndAnimationDuration touchEndTransform:_touchEndTransform];
+                fingerView = [[QTouchposeFingerView alloc] initWithPoint:point
+                                                                   color:_touchColor
+                                               touchEndAnimationDuration:_touchEndAnimationDuration
+                                                       touchEndTransform:_touchEndTransform
+                                                        customTouchImage:self.customTouchImage
+                                                        customTouchPoint:self.customTouchPoint];
                 [_touchView addSubview:fingerView];
                 CFDictionarySetValue(_touchDictionary, (__bridge const void *)(touch), (__bridge const void *)(fingerView));
             }
             else
             {
-                fingerView.center = point;
+                if (self.customTouchImage)
+                {
+                    CGPoint newCenter = point;
+                    newCenter.x += (self.customTouchImage.size.width / 2) - self.customTouchPoint.x;
+                    newCenter.y += (self.customTouchImage.size.height / 2) - 148;
+                    
+                    fingerView.center = newCenter;                    
+                }
+                else
+                {
+                    fingerView.center = point;
+                }
             }
         }
     }

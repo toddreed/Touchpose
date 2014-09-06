@@ -24,4 +24,7 @@
 @property (nonatomic) CATransform3D touchEndTransform;
 @property (nonatomic, strong) UIColor *touchColor;
 
+@property (nonatomic) UIImage *customTouchImage;
+@property (nonatomic) CGPoint customTouchPoint;
+
 @end
