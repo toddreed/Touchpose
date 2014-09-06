@@ -43,9 +43,6 @@
     //
     // touchposeApplication.customTouchImage = [UIImage imageNamed:@"<my_custom_image.png>"];
     // touchposeApplication.customTouchPoint = CGPointMake(214, 148);
-    
-touchposeApplication.customTouchImage = [UIImage imageNamed:@"<my_custom_image.png>"];
-touchposeApplication.customTouchPoint = CGPointMake(214, 148);
 
     return YES;
 }
