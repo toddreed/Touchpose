@@ -293,9 +293,9 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
                 {
                     CGPoint newCenter = point;
                     newCenter.x += (self.customTouchImage.size.width / 2) - self.customTouchPoint.x;
-                    newCenter.y += (self.customTouchImage.size.height / 2) - 148;
-                    
-                    fingerView.center = newCenter;                    
+                    newCenter.y += (self.customTouchImage.size.height / 2) - self.customTouchPoint.y;
+
+                    fingerView.center = newCenter;
                 }
                 else
                 {
