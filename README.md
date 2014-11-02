@@ -46,6 +46,25 @@ only displayed when actually connected to an external device. If you
 want to always show touch events, set the `alwaysShowTouches` property
 of `QTouchposeApplication` to `YES`.
 
+## Custom Cursor Indicators
+
+Instead of the default "bubble" indicator, you can supply your own image after you instantiate `QTouchposeApplication`.
+
+For example, you can use the following [hand cursor image](./QTouchposeFinger.png) to generate a custom cursor.
+
+
+```
+touchposeApplication.customTouchImage = [UIImage imageNamed:@"<my_custom_image.png>"];
+touchposeApplication.customTouchPoint = CGPointMake(214, 148);
+```
+
+The `customTouchPoint` property is the desired touch point of your image, relative to the image itself (upper-left corner = 0,0). In this case, the point *214,148* represents the tip of the index finger in the image.
+
+After adding these two properties, your cursor will now be represented by the custom image.
+
+<img src="touchpose_hand_screenshot.png" width="115px" height="222px" />
+
+
 ## Known Issues
 
 - When an alert view is display, touches that are initiated outside
