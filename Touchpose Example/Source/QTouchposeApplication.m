@@ -234,19 +234,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         {
             UIView *view = (__bridge UIView *)values[i];
             CFDictionaryRemoveValue(_touchDictionary, (__bridge const void *)(touch));
-            
-            if (self.customTouchImage)
-            {
-                [UIView animateWithDuration:0.5f animations:^{
-                    view.alpha = 0.0;
-                } completion:^(BOOL finished) {
-                    [view removeFromSuperview];
-                }];
-            }
-            else
-            {
-                [view removeFromSuperview];
-            }
+            [view removeFromSuperview];
         }
     }
 }
