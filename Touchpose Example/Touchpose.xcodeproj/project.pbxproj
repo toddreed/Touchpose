@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5F3C0D251A06E8F100D9A587 /* QTouchposeTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3C0D241A06E8F100D9A587 /* QTouchposeTouchView.m */; };
+		5F3C0D281A06F05A00D9A587 /* QTouchposeCircleTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3C0D271A06F05A00D9A587 /* QTouchposeCircleTouchView.m */; };
+		5F3C0D2B1A06F3A300D9A587 /* QTouchposeImageTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3C0D2A1A06F3A300D9A587 /* QTouchposeImageTouchView.m */; };
 		5F5750F31964D63700CF65DE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5750F21964D63700CF65DE /* QuartzCore.framework */; };
 		5FDDAAF0196510740030CC94 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5FDDAAEF196510740030CC94 /* Images.xcassets */; };
 		5FFDBED914EEEAAB002CBB71 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBED814EEEAAB002CBB71 /* UIKit.framework */; };
@@ -20,6 +23,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5F3C0D231A06E8F100D9A587 /* QTouchposeTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTouchposeTouchView.h; sourceTree = "<group>"; };
+		5F3C0D241A06E8F100D9A587 /* QTouchposeTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTouchposeTouchView.m; sourceTree = "<group>"; };
+		5F3C0D261A06F05A00D9A587 /* QTouchposeCircleTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTouchposeCircleTouchView.h; sourceTree = "<group>"; };
+		5F3C0D271A06F05A00D9A587 /* QTouchposeCircleTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTouchposeCircleTouchView.m; sourceTree = "<group>"; };
+		5F3C0D291A06F3A300D9A587 /* QTouchposeImageTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTouchposeImageTouchView.h; sourceTree = "<group>"; };
+		5F3C0D2A1A06F3A300D9A587 /* QTouchposeImageTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTouchposeImageTouchView.m; sourceTree = "<group>"; };
 		5F5750F21964D63700CF65DE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5FDDAAEF196510740030CC94 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		5FFDBED414EEEAAB002CBB71 /* Touchposé.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Touchposé.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +98,12 @@
 				5FFDBEE814EEEAAB002CBB71 /* QAppDelegate.m */,
 				5FFDBEFD14EEF737002CBB71 /* QTouchposeApplication.h */,
 				5FFDBEFE14EEF737002CBB71 /* QTouchposeApplication.m */,
+				5F3C0D261A06F05A00D9A587 /* QTouchposeCircleTouchView.h */,
+				5F3C0D271A06F05A00D9A587 /* QTouchposeCircleTouchView.m */,
+				5F3C0D291A06F3A300D9A587 /* QTouchposeImageTouchView.h */,
+				5F3C0D2A1A06F3A300D9A587 /* QTouchposeImageTouchView.m */,
+				5F3C0D231A06E8F100D9A587 /* QTouchposeTouchView.h */,
+				5F3C0D241A06E8F100D9A587 /* QTouchposeTouchView.m */,
 				5FFDBEEA14EEEAAB002CBB71 /* QViewController.h */,
 				5FFDBEEB14EEEAAB002CBB71 /* QViewController.m */,
 				5FFDBEDF14EEEAAB002CBB71 /* Supporting Files */,
@@ -184,10 +199,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F3C0D251A06E8F100D9A587 /* QTouchposeTouchView.m in Sources */,
+				5F3C0D281A06F05A00D9A587 /* QTouchposeCircleTouchView.m in Sources */,
 				5FFDBEE514EEEAAB002CBB71 /* main.m in Sources */,
 				5FFDBEE914EEEAAB002CBB71 /* QAppDelegate.m in Sources */,
 				5FFDBEEC14EEEAAB002CBB71 /* QViewController.m in Sources */,
 				5FFDBEFF14EEF737002CBB71 /* QTouchposeApplication.m in Sources */,
+				5F3C0D2B1A06F3A300D9A587 /* QTouchposeImageTouchView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

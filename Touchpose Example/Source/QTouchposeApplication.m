@@ -13,10 +13,11 @@
 // limitations under the License.
 
 
-#import "QTouchposeApplication.h"
 #import <QuartzCore/QuartzCore.h>
+#import <objc/runtime.h>
 
-#import <objc/runtime.h> 
+#import "QTouchposeApplication.h"
+#import "QTouchposeCircleTouchView.h"
 
 
 @interface QTouchposeApplication ()
@@ -27,7 +28,7 @@
 @end
 
 /// The QTouchposeTouchesView is an overlay view that is used as the superview for
-/// QTouchposeFingerView instances.
+/// QTouchposeTouchView instances.
 @interface QTouchposeTouchesView : UIView
 @end
 
@@ -35,91 +36,7 @@
 @end
 
 
-/// The QTouchposeFingerView is used to render a finger touches on the screen.
-@interface QTouchposeFingerView : UIView
 
-- (id)initWithPoint:(CGPoint)point
-              color:(UIColor *)color
-touchEndAnimationDuration:(NSTimeInterval)touchEndAnimationDuration
-  touchEndTransform:(CATransform3D)touchEndTransform
-   customTouchImage:(UIImage *)customTouchImage
-   customTouchPoint:(CGPoint)customtouchPoint;
-
-@end
-
-@implementation QTouchposeFingerView
-{
-    CATransform3D _touchEndTransform;
-    CGFloat _touchEndAnimationDuration;
-}
-
-#pragma mark - UIView
-
-- (id)initWithFrame:(CGRect)frame
-{
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                   reason:[NSString stringWithFormat:@"-[%@ %@] not supported", NSStringFromClass([self class]), NSStringFromSelector(_cmd)]
-                                 userInfo:nil];
-}
-
-- (void)removeFromSuperview
-{
-    [UIView animateWithDuration:_touchEndAnimationDuration animations:^{
-        self.alpha = 0.0f;
-        self.layer.transform = _touchEndTransform;
-    } completion:^(BOOL completed){
-        [super removeFromSuperview];
-    }];
-}
-
-#pragma mark - QTouchposeFingerView
-
-- (id)initWithPoint:(CGPoint)point
-              color:(UIColor *)color
-touchEndAnimationDuration:(NSTimeInterval)touchEndAnimationDuration
-  touchEndTransform:(CATransform3D)touchEndTransform
-   customTouchImage:(UIImage *)customTouchImage
-   customTouchPoint:(CGPoint)customtouchPoint
-
-{
-    if (customTouchImage)
-    {        
-        CGRect frame = CGRectMake(point.x - customtouchPoint.x,
-                                  point.y - customtouchPoint.y,
-                                  customTouchImage.size.width,
-                                  customTouchImage.size.height);
-        
-        if (self = [super initWithFrame:frame])
-        {
-            self.opaque = NO;
-            
-            UIImageView *iv = [[UIImageView alloc] initWithImage:customTouchImage];
-            [self addSubview:iv];
-        }
-        
-        return self;
-    }
-    else
-    {
-        const CGFloat kFingerRadius = 22.0f;
-        
-        if ((self = [super initWithFrame:CGRectMake(point.x-kFingerRadius, point.y-kFingerRadius, 2*kFingerRadius, 2*kFingerRadius)]))
-        {
-            self.opaque = NO;
-            self.layer.borderColor = [color colorWithAlphaComponent:0.6f].CGColor;
-            self.layer.cornerRadius = kFingerRadius;
-            self.layer.borderWidth = 2.0f;
-            self.layer.backgroundColor = [color colorWithAlphaComponent:0.4f].CGColor;
-
-            _touchEndAnimationDuration = touchEndAnimationDuration;
-            _touchEndTransform = touchEndTransform;
-        }
-        
-        return self;
-    }
-}
-
-@end
 
 IMP SwizzleMethod(Class c, SEL sel, IMP newImplementation)
 {
@@ -147,7 +64,7 @@ static void (*UIWindow_orig_didAddSubview)(UIWindow *, SEL, UIView *);
 // used to keep the overlay view the top-most view of the window.
 static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
 {
-    if (![view isKindOfClass:[QTouchposeFingerView class]])
+    if (![view conformsToProtocol:@protocol(QTouchposeTouchView)])
     {
         QTouchposeApplication *application = (QTouchposeApplication *)[UIApplication sharedApplication];
         [application bringTouchViewToFront];
@@ -165,7 +82,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
     // UIView instances because UITouch objects are persistent throughout a multi-touch
     // sequence, and the UIViews are retained by their superview.)
     CFMutableDictionaryRef _touchDictionary;
-    UIView *_touchView;
+    QTouchposeTouchesView *_touchesView;
 }
 
 #pragma mark - NSObject
@@ -187,17 +104,13 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHideNotification:) name:UIKeyboardDidHideNotification object:nil];        
         _touchDictionary = CFDictionaryCreateMutable(NULL, 10, NULL, NULL);
         _alwaysShowTouches = NO;
-        _touchColor = [UIColor colorWithRed:0.251f green:0.424f blue:0.502f alpha:1.0f];
-        _touchEndAnimationDuration = 0.5f;
-        _touchEndTransform = CATransform3DMakeScale(1.5, 1.5, 1);
-        
-        _customTouchImage = nil;
-        _customTouchPoint = CGPointZero;
-        
+
         // In my experience, the keyboard performance is crippled when showing touches on a
         // device running iOS < 5, so by default, disable touches when the keyboard is
         // present.
         _showTouchesWhenKeyboardShown = [[self class] majorSystemVersion] >= 5;
+
+        _touchViewFactory = [[QTouchposeCircleTouchViewFactory alloc] init];
     }
     return self;
 }
@@ -243,8 +156,8 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
 {
     for (UITouch *touch in touches)
     {
-        CGPoint point = [touch locationInView:_touchView];
-        UIView *fingerView = (UIView *)CFDictionaryGetValue(_touchDictionary, (__bridge const void *)(touch));
+        CGPoint point = [touch locationInView:_touchesView];
+        UIView<QTouchposeTouchView> *fingerView = (UIView<QTouchposeTouchView> *)CFDictionaryGetValue(_touchDictionary, (__bridge const void *)(touch));
         
         if (touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded)
         {
@@ -255,7 +168,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
             // comments about this issue. No workaround is implemented here.
             
             
-            if (fingerView != NULL)
+            if (fingerView != nil)
             {
                 // Remove the touch from the 
                 CFDictionaryRemoveValue(_touchDictionary, (__bridge const void *)(touch));
@@ -264,31 +177,15 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         }
         else
         {
-            if (fingerView == NULL)
+            if (fingerView == nil)
             {
-                fingerView = [[QTouchposeFingerView alloc] initWithPoint:point
-                                                                   color:_touchColor
-                                               touchEndAnimationDuration:_touchEndAnimationDuration
-                                                       touchEndTransform:_touchEndTransform
-                                                        customTouchImage:self.customTouchImage
-                                                        customTouchPoint:self.customTouchPoint];
-                [_touchView addSubview:fingerView];
+                fingerView = [_touchViewFactory touchViewAtPoint:point];
+                [_touchesView addSubview:fingerView];
                 CFDictionarySetValue(_touchDictionary, (__bridge const void *)(touch), (__bridge const void *)(fingerView));
             }
             else
             {
-                if (self.customTouchImage)
-                {
-                    CGPoint newCenter = point;
-                    newCenter.x += (self.customTouchImage.size.width / 2) - self.customTouchPoint.x;
-                    newCenter.y += (self.customTouchImage.size.height / 2) - self.customTouchPoint.y;
-
-                    fingerView.center = newCenter;
-                }
-                else
-                {
-                    fingerView.center = point;
-                }
+                fingerView.touchPoint = point;
             }
         }
     }
@@ -328,14 +225,14 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
 
 - (void)keyWindowChanged:(UIWindow *)window
 {
-    if (_touchView)
-        [window addSubview:_touchView];
+    if (_touchesView)
+        [window addSubview:_touchesView];
 }
 
 - (void)bringTouchViewToFront
 {
-    if (_touchView)
-        [_touchView.window bringSubviewToFront:_touchView];
+    if (_touchesView)
+        [_touchesView.window bringSubviewToFront:_touchesView];
 }
 
 - (BOOL)hasMirroredScreen
@@ -361,23 +258,23 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
 {
     if (showTouches)
     {
-        if (_touchView == nil && self.keyWindow)
+        if (_touchesView == nil && self.keyWindow)
         {
             UIWindow *window = self.keyWindow;
-            _touchView = [[QTouchposeTouchesView alloc] initWithFrame:window.bounds];
-            _touchView.backgroundColor = [UIColor clearColor];
-            _touchView.opaque = NO;
-            _touchView.userInteractionEnabled = NO;
-            [window addSubview:_touchView];
+            _touchesView = [[QTouchposeTouchesView alloc] initWithFrame:window.bounds];
+            _touchesView.backgroundColor = [UIColor clearColor];
+            _touchesView.opaque = NO;
+            _touchesView.userInteractionEnabled = NO;
+            [window addSubview:_touchesView];
         }
     }
     else
     {
         [self removeTouchesActiveTouches:nil];
-        if (_touchView)
+        if (_touchesView)
         {
-            [_touchView removeFromSuperview];
-            _touchView = nil;
+            [_touchesView removeFromSuperview];
+            _touchesView = nil;
         }
     }
     _showTouches = showTouches;

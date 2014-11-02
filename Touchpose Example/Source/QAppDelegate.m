@@ -16,6 +16,8 @@
 #import "QViewController.h"
 #import "QTouchposeApplication.h"
 
+#import "QTouchposeImageTouchView.h"
+
 @implementation QAppDelegate
 
 #pragma mark UIApplicationDelegate
@@ -32,19 +34,17 @@
     QTouchposeApplication *touchposeApplication = (QTouchposeApplication *)application;
     touchposeApplication.alwaysShowTouches = YES;
 
-    // Examples of customizing the color and touch-end animation:
-    //
-    // touchposeApplication.touchColor = [UIColor redColor];
-    // touchposeApplication.touchEndAnimationDuration = 0.3f;
-    // touchposeApplication.touchEndTransform = CATransform3DMakeScale(0.1, 0.1, 1);
-    
-    // Example of adding your own custom image
-    // "customTouchPoint" is a point relative to the image (upper-left corner = 0,0) indicating the desired touch point of the cursor
-    //
-    // touchposeApplication.customTouchImage = [UIImage imageNamed:@"<my_custom_image.png>"];
-    // touchposeApplication.customTouchPoint = CGPointMake(214, 148);
+#if 0
+    // Example of customizing the "touch"
+
+    QTouchposeImageTouchViewFactory *touchViewFactory = [[QTouchposeImageTouchViewFactory alloc] init];
+    touchViewFactory.touchImage = [UIImage imageNamed:@"Finger"];
+    touchViewFactory.offset = CGPointMake(52, 43);
+    touchposeApplication.touchViewFactory = touchViewFactory;
+#endif
 
     return YES;
+
 }
 
 @end
