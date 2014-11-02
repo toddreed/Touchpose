@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'Touchpose'
-  s.version  = '1.1.0'
+  s.version  = '1.2.0'
   s.license  =  { :type => 'Apache', :file => 'LICENSE.txt' }
   s.summary  = 'Touchposé is a set of classes for iOS that renders screen touches when a device is connected to a mirrored display.'
   s.homepage = 'http://github.com/toddreed/Touchpose'
