@@ -24,7 +24,7 @@
 
 - (void)loadView
 {
-    UIImageView *view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Touchposé"]];
+    UIImageView *view = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Touchpose"]];
     view.backgroundColor = [UIColor whiteColor];
     view.contentMode = UIViewContentModeCenter;
     self.view = view;
