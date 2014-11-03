@@ -1,6 +1,6 @@
 # Touchposé
 
-![Touchposé with four fingers on the screen.](http://reactionsoftware.com.s3.amazonaws.com/images/Touchpos%C3%A9%20screen%20shot.png)
+![Touchposé with four fingers on the screen.](Touchpose.png)
 
 Touchposé is a set of classes for iOS that renders screen touches when
 a device is connected to a mirrored display. Touchposé adds a
@@ -31,39 +31,49 @@ To use Touchposé with an app, indicate that `QTouchposeApplication`
 should be used instead of `UIApplication`. This is done by specifying
 the application class in UIApplicationMain:
 
-        int main(int argc, char *argv[])
-        {
-            @autoreleasepool
-            {
-                return UIApplicationMain(argc, argv,
-                                         NSStringFromClass([QTouchposeApplication class]),
-                                         NSStringFromClass([QAppDelegate class]));
-            }
-        }
+```objective-c
+int main(int argc, char *argv[])
+{
+    @autoreleasepool
+    {
+        return UIApplicationMain(argc, argv,
+                                 NSStringFromClass([QTouchposeApplication class]),
+                                 NSStringFromClass([QAppDelegate class]));
+    }
+}
+```
 
 That’s it; no other steps are needed. By default, touch events are
 only displayed when actually connected to an external device. If you
 want to always show touch events, set the `alwaysShowTouches` property
-of `QTouchposeApplication` to `YES`.
+of `QTouchposeApplication` to `YES` in
+`-application:didFinishLaunchingWithOptions:`.
 
-## Custom Cursor Indicators
+## Custom Touch Indicators
 
-Instead of the default "bubble" indicator, you can supply your own image after you instantiate `QTouchposeApplication`.
+Instead of the default circle touch indicator, you can customize the
+view used for touches. To do this set the `touchViewFactory` property
+of `QTouchposeApplication` to a custom factory class that implements
+the `QTouchposeTouchViewFactory` protocol.
 
-For example, you can use the following [hand cursor image](./QTouchposeFinger.png) to generate a custom cursor.
+Touchposé includes an alternate touch view factory
+`QTouchposeImageTouchViewFactory` that uses an image for the touch
+view. This can be configured like this:
 
+```objective-c
+QTouchposeImageTouchViewFactory *touchViewFactory = [[QTouchposeImageTouchViewFactory alloc] init];
+touchViewFactory.touchImage = [UIImage imageNamed:@"Finger"];
+touchViewFactory.offset = CGPointMake(52, 43);
+touchposeApplication.touchViewFactory = touchViewFactory;
 
 ```
-touchposeApplication.customTouchImage = [UIImage imageNamed:@"<my_custom_image.png>"];
-touchposeApplication.customTouchPoint = CGPointMake(214, 148);
-```
 
-The `customTouchPoint` property is the desired touch point of your image, relative to the image itself (upper-left corner = 0,0). In this case, the point *214,148* represents the tip of the index finger in the image.
+This setup produces a image of a hand with the pointer finger
+indicating the touch point. The `offset` property above provides the
+offset from the image’s origin (top-right corner) that represents the
+touch point.
 
-After adding these two properties, your cursor will now be represented by the custom image.
-
-<img src="touchpose_hand_screenshot.png" width="115px" height="222px" />
-
+![Touchposé with a hand image.](TouchposeHand.png)
 
 ## Known Issues
 
@@ -90,3 +100,8 @@ After adding these two properties, your cursor will now be represented by the cu
 
 Touchposé is licensed under the
 [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
+
+## Credits
+
+The devices images in this README are from
+[Robbie Pearce](http://robbiepearce.com/devices).
