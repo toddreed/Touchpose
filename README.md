@@ -46,6 +46,17 @@ only displayed when actually connected to an external device. If you
 want to always show touch events, set the `alwaysShowTouches` property
 of `QTouchposeApplication` to `YES`.
 
+## Swift
+(tested on Xcode 6.3.1)
+
+Remove `@UIApplicationMain` from your AppDelegate file.
+
+After adding Touchpose to your project you will need a main.swift file that has 1, yes 1, line in it:
+
+        UIApplicationMain(Process.argc, Process.unsafeArgv, NSStringFromClass(QTouchposeApplication.self), NSStringFromClass(YOUR_APP_Delegate.self))
+
+Or change the name of the sampleMain.swift file and add it to your project
+
 ## Custom Cursor Indicators
 
 Instead of the default "bubble" indicator, you can supply your own image after you instantiate `QTouchposeApplication`.
