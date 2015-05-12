@@ -53,7 +53,7 @@ Remove `@UIApplicationMain` from your AppDelegate file.
 
 After adding Touchpose to your project you will need a main.swift file that has 1, yes 1, line in it:
 
-        UIApplicationMain(Process.argc, Process.unsafeArgv, NSStringFromClass(QTouchposeApplication.self), NSStringFromClass(YOUR_APP_Delegate.self)
+        UIApplicationMain(Process.argc, Process.unsafeArgv, NSStringFromClass(QTouchposeApplication.self), NSStringFromClass(YOUR_APP_Delegate.self))
 
 Or change the name of the sampleMain.swift file and add it to your project
 
