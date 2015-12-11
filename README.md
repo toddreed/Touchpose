@@ -9,9 +9,39 @@ semi-transparent circles to be rendered on the overlay--an essential
 tool when demoing an app with a projector (with an iPad 2 or iPhone
 4S).
 
-To use Touchposé in your own app, copy `QTouchposeApplication.m` and
-`QTouchposeApplication.h` from the example project to your project.
+## Installation 
 
+Touchposé supports multiple methods for installing the library in a project.
+
+### Installation with CocoaPods
+
+[CocoaPods](http://cocoapods.org/) is a dependency manager for Cocoa projects. You can install it with the following command:
+```
+$ gem install cocoapods
+```
+
+To integrate Touchposé into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '8.0'
+use_frameworks!
+
+pod 'Touchpose'
+```
+
+Then, run the following command:
+
+```
+$ pod install
+```
+
+### Manually
+
+If you prefer not to use a dependency managers, you can integrate Touchposé into your project manually.
+To use Touchposé in your own app, copy `QTouchposeApplication.m` and `QTouchposeApplication.h` from the example project to your project.
+
+## Usage 
 Touchposé should work for most apps (but read the caveat below). It’s
 implemented by a single public class, `QTouchposeApplication`, and
 several private classes.  `QTouchposeApplication` overrides
