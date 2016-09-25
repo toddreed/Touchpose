@@ -22,10 +22,10 @@
 /// QTouchposeCircleTouchView renders a touch as circular dot.
 @interface QTouchposeCircleTouchView : UIView <QTouchposeTouchView>
 
-- (id)initWithPoint:(CGPoint)point
-              color:(UIColor *)color
-touchEndAnimationDuration:(NSTimeInterval)touchEndAnimationDuration
-  touchEndTransform:(CATransform3D)touchEndTransform;
+- (instancetype)initWithPoint:(CGPoint)point
+                        color:(UIColor *)color
+    touchEndAnimationDuration:(NSTimeInterval)touchEndAnimationDuration
+            touchEndTransform:(CATransform3D)touchEndTransform;
 
 @property (nonatomic) CGFloat touchEndAnimationDuration;
 @property (nonatomic) CATransform3D touchEndTransform;

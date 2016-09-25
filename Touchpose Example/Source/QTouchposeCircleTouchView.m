@@ -42,7 +42,7 @@
 
 #pragma mark - UIView
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"-[%@ %@] not supported", NSStringFromClass([self class]), NSStringFromSelector(_cmd)]
@@ -61,10 +61,10 @@
 
 #pragma mark - QTouchposeCircleTouchView
 
-- (id)initWithPoint:(CGPoint)point
-              color:(UIColor *)color
-touchEndAnimationDuration:(NSTimeInterval)touchEndAnimationDuration
-  touchEndTransform:(CATransform3D)touchEndTransform
+- (instancetype)initWithPoint:(CGPoint)point
+                        color:(UIColor *)color
+    touchEndAnimationDuration:(NSTimeInterval)touchEndAnimationDuration
+            touchEndTransform:(CATransform3D)touchEndTransform
 {
     const CGFloat kFingerRadius = 22.0f;
 

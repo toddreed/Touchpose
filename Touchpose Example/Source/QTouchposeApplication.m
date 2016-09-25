@@ -93,7 +93,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
     return [[versionComponents objectAtIndex:0] integerValue];
 }
 
-- (id)init
+- (instancetype)init
 {
     if ((self = [super init]))
     {

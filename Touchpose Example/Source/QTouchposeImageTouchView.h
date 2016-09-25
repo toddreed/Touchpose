@@ -21,9 +21,9 @@
 
 @interface QTouchposeImageTouchView : UIView <QTouchposeTouchView>
 
-- (id)initWithPoint:(CGPoint)point
-         touchImage:(UIImage *)touchImage
-             offset:(CGPoint)offset;
+- (instancetype)initWithPoint:(CGPoint)point
+                   touchImage:(UIImage *)touchImage
+                       offset:(CGPoint)offset;
 
 @property (nonatomic) CGFloat touchEndAnimationDuration;
 

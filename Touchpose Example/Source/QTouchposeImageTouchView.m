@@ -45,7 +45,7 @@
 
 #pragma mark - UIView
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:[NSString stringWithFormat:@"-[%@ %@] not supported", NSStringFromClass([self class]), NSStringFromSelector(_cmd)]
@@ -63,9 +63,9 @@
 
 #pragma mark - QTouchposeImageTouchView
 
-- (id)initWithPoint:(CGPoint)point
-         touchImage:(UIImage *)touchImage
-             offset:(CGPoint)offset
+- (instancetype)initWithPoint:(CGPoint)point
+                   touchImage:(UIImage *)touchImage
+                       offset:(CGPoint)offset
 {
     CGRect frame = CGRectMake(point.x - offset.x,
                               point.y - offset.y,
