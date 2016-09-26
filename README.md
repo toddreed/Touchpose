@@ -27,7 +27,8 @@ int main(int argc, char *argv[])
 }
 ```
 
-That’s it; no other steps are needed.
+If you’re using Objective-C, that’s it; no other steps are needed. For
+Swift 3, keep reading.
 
 ## Installation
 
@@ -40,10 +41,48 @@ To use Touchposé with [CocoaPods](https://cocoapods.org), add `pod
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
+use_frameworks! # required with Swift, optional with Objective-C
+
 target 'TargetName' do
   pod 'Touchpose', '~> 2.0'
 end
 ```
+
+## Using with Swift 3
+
+Touchposé works with Swift 3, but requires a few additional steps to setup:
+
+- Add `main.swift` to your project with the following content
+  (replacing `AppDelegate` with the name of your application delegate
+  class):
+
+    ```swift
+    import UIKit
+    import Touchpose
+
+
+    UIApplicationMain(CommandLine.argc,
+                      UnsafeMutableRawPointer(CommandLine.unsafeArgv).bindMemory(to: UnsafeMutablePointer<Int8>.self, capacity: Int(CommandLine.argc)),
+                      NSStringFromClass(TRTouchposeApplication.self),
+                      NSStringFromClass(AppDelegate.self))
+    ```
+    
+    (If anyone has a better way of passing `CommandLine.unsafeArgv`, I’d love to know what it is.)
+
+- Remove the `@UIApplicationMain` attribute from your app delegate class.
+
+- If you want to unconditionally enable Touchposé, add the following
+  to your `application( :didFinishLaunchingWithOptions)`
+  implementation should be something like this:
+
+    ```swift
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        window?.makeKeyAndVisible()
+        (application as! TRTouchposeApplication).showTouches = true
+        // Override point for customization after application launch.
+        return true
+    }
+    ```
 
 ## Custom Touch Indicators
 
