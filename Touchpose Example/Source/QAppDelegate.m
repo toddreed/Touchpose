@@ -32,7 +32,7 @@
 
     // For demo purposes, show the touches even when not mirroring to an external display.
     QTouchposeApplication *touchposeApplication = (QTouchposeApplication *)application;
-    touchposeApplication.alwaysShowTouches = YES;
+    touchposeApplication.showTouches = YES;
 
 #if 0
     // Example of customizing the "touch"

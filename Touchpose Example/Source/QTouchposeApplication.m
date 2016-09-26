@@ -19,6 +19,7 @@
 #import "QTouchposeApplication.h"
 #import "QTouchposeCircleTouchView.h"
 
+NSString *const QTouchposeTouchesVisibleDidChange = @"QTouchposeTouchesVisibleDidChange";
 
 @interface QTouchposeApplication ()
 
@@ -30,12 +31,111 @@
 /// The QTouchposeTouchesView is an overlay view that is used as the superview for
 /// QTouchposeTouchView instances.
 @interface QTouchposeTouchesView : UIView
+
+- (instancetype)initWithFrame:(CGRect)frame touchViewFactory:(id<QTouchposeTouchViewFactory>)touchViewFactory;
+
 @end
 
 @implementation QTouchposeTouchesView
+{
+    // Dictionary of touches being displayed. Keys are UITouch pointers and values are UIView pointers that visually represent
+    // the touch on-screen. (A CFMutableDictionaryRef is used because NSDictionary requries its keys to conform to the
+    // NSCopying protocol and UITouch doesn't. We don't need to retain either the UITouch or UIView instances because UITouch
+    // objects are persistent throughout a multi-touch sequence, and the UIViews are retained by their superview.)
+    CFMutableDictionaryRef _touchDictionary;
+    id<QTouchposeTouchViewFactory> _touchViewFactory;
+}
+
+#pragma mark - NSObject
+
+- (void)dealloc
+{
+    CFRelease(_touchDictionary);
+}
+
+#pragma mark - UIView
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    return [self initWithFrame:frame touchViewFactory:[[QTouchposeCircleTouchViewFactory alloc] init]];
+}
+
+- (instancetype)initWithFrame:(CGRect)frame touchViewFactory:(id<QTouchposeTouchViewFactory>)touchViewFactory
+{
+    NSParameterAssert(touchViewFactory != nil);
+
+    self = [super initWithFrame:frame];
+    _touchDictionary = CFDictionaryCreateMutable(NULL, 10, NULL, NULL);
+    _touchViewFactory = touchViewFactory;
+    return self;
+}
+
+#pragma mark - QTouchposeTouchesView
+
+- (void)removeTouchesActiveTouches:(NSSet *)activeTouches
+{
+    CFIndex count = CFDictionaryGetCount(_touchDictionary);
+    if (count > 0)
+    {
+        void const * keys[count];
+        void const * values[count];
+        CFDictionaryGetKeysAndValues(_touchDictionary, keys, values);
+        for (CFIndex i = 0; i < count; ++i)
+        {
+            UITouch *touch = (__bridge UITouch *)keys[i];
+
+            if (activeTouches == nil || ![activeTouches containsObject:touch])
+            {
+                UIView *view = (__bridge UIView *)values[i];
+                CFDictionaryRemoveValue(_touchDictionary, (__bridge const void *)(touch));
+                [view removeFromSuperview];
+            }
+        }
+    }
+}
+
+- (void)updateTouches:(NSSet *)touches
+{
+    for (UITouch *touch in touches)
+    {
+        CGPoint point = [touch locationInView:self];
+        UIView<QTouchposeTouchView> *fingerView = (UIView<QTouchposeTouchView> *)CFDictionaryGetValue(_touchDictionary, (__bridge const void *)(touch));
+
+        if (touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded)
+        {
+            // Note that there seems to be a bug in iOS: we won't observe all UITouches
+            // in the UITouchPhaseEnded phase, resulting in some finger views being left
+            // on the screen when they shouldn't be. See
+            // https://discussions.apple.com/thread/1507669?start=0&tstart=0 for other's
+            // comments about this issue. No workaround is implemented here.
+
+
+            if (fingerView != nil)
+            {
+                // Remove the touch from the
+                CFDictionaryRemoveValue(_touchDictionary, (__bridge const void *)(touch));
+                [fingerView removeFromSuperview];
+            }
+        }
+        else
+        {
+            if (fingerView == nil)
+            {
+                fingerView = [_touchViewFactory touchViewAtPoint:point];
+                [self addSubview:fingerView];
+                CFDictionarySetValue(_touchDictionary, (__bridge const void *)(touch), (__bridge const void *)(fingerView));
+            }
+            else
+            {
+                fingerView.touchPoint = point;
+            }
+        }
+    }
+
+    [self removeTouchesActiveTouches:touches];
+}
+
 @end
-
-
 
 
 IMP SwizzleMethod(Class c, SEL sel, IMP newImplementation)
@@ -75,23 +175,10 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
 
 @implementation QTouchposeApplication
 {
-    // Dictionary of touches being displayed. Keys are UITouch pointers and values are UIView
-    // pointers that represent that visually represent the touch on-screen. (A
-    // CFMutableDictionaryRef is used because NSDictionary requries its keys to conform to the
-    // NSCopying protocol and UITouch doesn't. We don't need to retain either the UITouch or
-    // UIView instances because UITouch objects are persistent throughout a multi-touch
-    // sequence, and the UIViews are retained by their superview.)
-    CFMutableDictionaryRef _touchDictionary;
     QTouchposeTouchesView *_touchesView;
 }
 
 #pragma mark - NSObject
-
-+ (NSUInteger)majorSystemVersion
-{
-    NSArray *versionComponents = [[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."];
-    return [[versionComponents objectAtIndex:0] integerValue];
-}
 
 - (instancetype)init
 {
@@ -100,17 +187,14 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunching:) name:UIApplicationDidFinishLaunchingNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(screenDidConnectNotification:) name:UIScreenDidConnectNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(screenDidDisonnectNotification:) name:UIScreenDidDisconnectNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShowNotification:) name:UIKeyboardDidShowNotification object:nil];        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHideNotification:) name:UIKeyboardDidHideNotification object:nil];        
-        _touchDictionary = CFDictionaryCreateMutable(NULL, 10, NULL, NULL);
-        _alwaysShowTouches = NO;
 
-        // In my experience, the keyboard performance is crippled when showing touches on a
-        // device running iOS < 5, so by default, disable touches when the keyboard is
-        // present.
-        _showTouchesWhenKeyboardShown = [[self class] majorSystemVersion] >= 5;
-
+        _automaticallyManageTouchesWhenScreenMirrored = YES;
         _touchViewFactory = [[QTouchposeCircleTouchViewFactory alloc] init];
+
+        _touchesView = [[QTouchposeTouchesView alloc] init];
+        _touchesView.backgroundColor = [UIColor clearColor];
+        _touchesView.opaque = NO;
+        _touchesView.userInteractionEnabled = NO;
     }
     return self;
 }
@@ -118,80 +202,18 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    CFRelease(_touchDictionary);
 }
-
 
 #pragma mark - UIApplication
 
 - (void)sendEvent:(UIEvent *)event
 {
     if (_showTouches)
-        [self updateTouches:[event allTouches]];
+        [_touchesView updateTouches:[event allTouches]];
     [super sendEvent:event];
 }
 
 #pragma mark - QApplication
-
-- (void)removeTouchesActiveTouches:(NSSet *)activeTouches
-{
-    CFIndex count = CFDictionaryGetCount(_touchDictionary);
-    void const * keys[count];
-    void const * values[count];
-    CFDictionaryGetKeysAndValues(_touchDictionary, keys, values);
-    for (CFIndex i = 0; i < count; ++i)
-    {
-        UITouch *touch = (__bridge UITouch *)keys[i];
-
-        if (activeTouches == nil || ![activeTouches containsObject:touch])
-        {
-            UIView *view = (__bridge UIView *)values[i];
-            CFDictionaryRemoveValue(_touchDictionary, (__bridge const void *)(touch));
-            [view removeFromSuperview];
-        }
-    }
-}
-
-- (void)updateTouches:(NSSet *)touches
-{
-    for (UITouch *touch in touches)
-    {
-        CGPoint point = [touch locationInView:_touchesView];
-        UIView<QTouchposeTouchView> *fingerView = (UIView<QTouchposeTouchView> *)CFDictionaryGetValue(_touchDictionary, (__bridge const void *)(touch));
-        
-        if (touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded)
-        {
-            // Note that there seems to be a bug in iOS: we won't observe all UITouches
-            // in the UITouchPhaseEnded phase, resulting in some finger views being left
-            // on the screen when they shouldn't be. See
-            // https://discussions.apple.com/thread/1507669?start=0&tstart=0 for other's
-            // comments about this issue. No workaround is implemented here.
-            
-            
-            if (fingerView != nil)
-            {
-                // Remove the touch from the 
-                CFDictionaryRemoveValue(_touchDictionary, (__bridge const void *)(touch));
-                [fingerView removeFromSuperview];
-            }
-        }
-        else
-        {
-            if (fingerView == nil)
-            {
-                fingerView = [_touchViewFactory touchViewAtPoint:point];
-                [_touchesView addSubview:fingerView];
-                CFDictionarySetValue(_touchDictionary, (__bridge const void *)(touch), (__bridge const void *)(fingerView));
-            }
-            else
-            {
-                fingerView.touchPoint = point;
-            }
-        }
-    }
-
-    [self removeTouchesActiveTouches:touches];
-}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
@@ -200,27 +222,19 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
     UIWindow_orig_didAddSubview = (void (*)(UIWindow *, SEL, UIView *))SwizzleMethod([UIWindow class], @selector(didAddSubview:), (IMP)UIWindow_new_didAddSubview);
     UIWindow_orig_becomeKeyWindow = (void (*)(UIWindow *, SEL))SwizzleMethod([UIWindow class], @selector(becomeKeyWindow), (IMP)UIWindow_new_becomeKeyWindow);
 
-    self.showTouches = _alwaysShowTouches || [self hasMirroredScreen];
+    self.showTouches = _automaticallyManageTouchesWhenScreenMirrored || [self hasMirroredScreen];
 }
 
 - (void)screenDidConnectNotification:(NSNotification *)notification
 {
-    self.showTouches = _alwaysShowTouches || [self hasMirroredScreen];
+    if (_automaticallyManageTouchesWhenScreenMirrored && [self hasMirroredScreen])
+        self.showTouches = YES;
 }
 
 - (void)screenDidDisonnectNotification:(NSNotification *)notification
 {
-    self.showTouches = _alwaysShowTouches || [self hasMirroredScreen];
-}
-
-- (void)keyboardDidShowNotification:(NSNotification *)notification
-{
-    self.showTouches = _showTouchesWhenKeyboardShown && (_alwaysShowTouches || [self hasMirroredScreen]);
-}
-
-- (void)keyboardDidHideNotification:(NSNotification *)notification
-{
-    self.showTouches = _alwaysShowTouches || [self hasMirroredScreen];
+    if (_automaticallyManageTouchesWhenScreenMirrored && [self hasMirroredScreen])
+        self.showTouches = NO;
 }
 
 - (void)keyWindowChanged:(UIWindow *)window
@@ -254,30 +268,33 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
     return hasMirroredScreen;
 }
 
+- (void)showTouchViews
+{
+    UIWindow *window = self.keyWindow;
+    if (window)
+    {
+        _touchesView.frame = window.bounds;
+        [window addSubview:_touchesView];
+    }
+}
+
+- (void)hideTouchViews
+{
+    [_touchesView removeFromSuperview];
+}
+
 - (void)setShowTouches:(BOOL)showTouches
 {
-    if (showTouches)
+    BOOL equal = (_showTouches && showTouches) || (!_showTouches && !showTouches);
+    if (!equal)
     {
-        if (_touchesView == nil && self.keyWindow)
-        {
-            UIWindow *window = self.keyWindow;
-            _touchesView = [[QTouchposeTouchesView alloc] initWithFrame:window.bounds];
-            _touchesView.backgroundColor = [UIColor clearColor];
-            _touchesView.opaque = NO;
-            _touchesView.userInteractionEnabled = NO;
-            [window addSubview:_touchesView];
-        }
+        if (showTouches)
+            [self showTouchViews];
+        else
+            [self hideTouchViews];
+        _showTouches = showTouches;
+        [[NSNotificationCenter defaultCenter] postNotificationName:QTouchposeTouchesVisibleDidChange object:self];
     }
-    else
-    {
-        [self removeTouchesActiveTouches:nil];
-        if (_touchesView)
-        {
-            [_touchesView removeFromSuperview];
-            _touchesView = nil;
-        }
-    }
-    _showTouches = showTouches;
 }
 
 @end

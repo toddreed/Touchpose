@@ -12,7 +12,7 @@
 
 @interface QTouchposeImageTouchViewFactory: NSObject <QTouchposeTouchViewFactory>
 
-@property (nonatomic) UIImage *touchImage;
+@property (nonatomic, strong) UIImage *touchImage;
 @property (nonatomic) CGPoint offset;
 @property (nonatomic) CGFloat touchEndAnimationDuration;
 

@@ -54,7 +54,7 @@
     [UIView animateWithDuration:_touchEndAnimationDuration animations:^{
         self.alpha = 0.0f;
         self.layer.transform = _touchEndTransform;
-    } completion:^(BOOL completed){
+    } completion:^(BOOL completed) {
         [super removeFromSuperview];
     }];
 }
