@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#import <Touchpose/QTouchposeApplication.h>
+#import <Touchpose/QTouchposeImageTouchView.h>
+
 #import "QAppDelegate.h"
 #import "QViewController.h"
-#import "QTouchposeApplication.h"
-
-#import "QTouchposeImageTouchView.h"
 
 @implementation QAppDelegate
 
