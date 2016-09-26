@@ -11,6 +11,8 @@
 		5F3C0D281A06F05A00D9A587 /* QTouchposeCircleTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3C0D271A06F05A00D9A587 /* QTouchposeCircleTouchView.m */; };
 		5F3C0D2B1A06F3A300D9A587 /* QTouchposeImageTouchView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3C0D2A1A06F3A300D9A587 /* QTouchposeImageTouchView.m */; };
 		5F5750F31964D63700CF65DE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5750F21964D63700CF65DE /* QuartzCore.framework */; };
+		5FD03E531D987D3500BFF677 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5FD03E521D987D3500BFF677 /* Launch Screen.storyboard */; };
+		5FD03E551D987E1300BFF677 /* QViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5FD03E541D987E1300BFF677 /* QViewController.xib */; };
 		5FDDAAF0196510740030CC94 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5FDDAAEF196510740030CC94 /* Images.xcassets */; };
 		5FFDBED914EEEAAB002CBB71 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBED814EEEAAB002CBB71 /* UIKit.framework */; };
 		5FFDBEDB14EEEAAB002CBB71 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBEDA14EEEAAB002CBB71 /* Foundation.framework */; };
@@ -30,6 +32,8 @@
 		5F3C0D291A06F3A300D9A587 /* QTouchposeImageTouchView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTouchposeImageTouchView.h; sourceTree = "<group>"; };
 		5F3C0D2A1A06F3A300D9A587 /* QTouchposeImageTouchView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTouchposeImageTouchView.m; sourceTree = "<group>"; };
 		5F5750F21964D63700CF65DE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		5FD03E521D987D3500BFF677 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		5FD03E541D987E1300BFF677 /* QViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QViewController.xib; sourceTree = "<group>"; };
 		5FDDAAEF196510740030CC94 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		5FFDBED414EEEAAB002CBB71 /* Touchposé.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Touchposé.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FFDBED814EEEAAB002CBB71 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -62,6 +66,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5FD03E4F1D987C8800BFF677 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				5FD03E511D987D0700BFF677 /* Storyboards */,
+				5FD03E501D987CBD00BFF677 /* View Controllers */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		5FD03E501D987CBD00BFF677 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				5FFDBEEA14EEEAAB002CBB71 /* QViewController.h */,
+				5FFDBEEB14EEEAAB002CBB71 /* QViewController.m */,
+				5FD03E541D987E1300BFF677 /* QViewController.xib */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		5FD03E511D987D0700BFF677 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				5FD03E521D987D3500BFF677 /* Launch Screen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
 		5FFDBEC914EEEAAB002CBB71 = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +125,7 @@
 		5FFDBEDE14EEEAAB002CBB71 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				5FD03E4F1D987C8800BFF677 /* UI */,
 				5FFDBEE714EEEAAB002CBB71 /* QAppDelegate.h */,
 				5FFDBEE814EEEAAB002CBB71 /* QAppDelegate.m */,
 				5FFDBEFD14EEF737002CBB71 /* QTouchposeApplication.h */,
@@ -104,8 +136,6 @@
 				5F3C0D2A1A06F3A300D9A587 /* QTouchposeImageTouchView.m */,
 				5F3C0D231A06E8F100D9A587 /* QTouchposeTouchView.h */,
 				5F3C0D241A06E8F100D9A587 /* QTouchposeTouchView.m */,
-				5FFDBEEA14EEEAAB002CBB71 /* QViewController.h */,
-				5FFDBEEB14EEEAAB002CBB71 /* QViewController.m */,
 				5FFDBEDF14EEEAAB002CBB71 /* Supporting Files */,
 			);
 			path = Source;
@@ -187,6 +217,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FD03E551D987E1300BFF677 /* QViewController.xib in Resources */,
+				5FD03E531D987D3500BFF677 /* Launch Screen.storyboard in Resources */,
 				5FFDBEE314EEEAAB002CBB71 /* InfoPlist.strings in Resources */,
 				5FDDAAF0196510740030CC94 /* Images.xcassets in Resources */,
 			);
@@ -272,13 +304,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Source/Touchpose-Prefix.pch";
 				INFOPLIST_FILE = "Source/Touchpose-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -289,13 +320,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Source/Touchpose-Prefix.pch";
 				INFOPLIST_FILE = "Source/Touchpose-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
