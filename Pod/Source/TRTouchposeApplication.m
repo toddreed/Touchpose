@@ -13,7 +13,7 @@
 // limitations under the License.
 
 
-#import <TRuartzCore/TRuartzCore.h>
+#import <QuartzCore/QuartzCore.h>
 #import <objc/runtime.h>
 
 #import "TRTouchposeApplication.h"
