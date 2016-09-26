@@ -14,12 +14,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class QViewController;
-
-@interface QAppDelegate : UIResponder <UIApplicationDelegate>
-
-@property (strong, nonatomic) UIWindow *window;
-
-@property (strong, nonatomic) QViewController *viewController;
+@interface TRViewController : UIViewController
 
 @end

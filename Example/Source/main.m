@@ -14,15 +14,15 @@
 
 #import <UIKit/UIKit.h>
 
-#import "QAppDelegate.h"
-#import "QTouchposeApplication.h"
+#import "TRAppDelegate.h"
+#import "TRTouchposeApplication.h"
 
 int main(int argc, char *argv[])
 {
     @autoreleasepool
     {
         return UIApplicationMain(argc, argv,
-                                 NSStringFromClass([QTouchposeApplication class]),
-                                 NSStringFromClass([QAppDelegate class]));
+                                 NSStringFromClass([TRTouchposeApplication class]),
+                                 NSStringFromClass([TRAppDelegate class]));
     }
 }

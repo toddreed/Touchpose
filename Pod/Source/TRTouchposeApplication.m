@@ -13,37 +13,37 @@
 // limitations under the License.
 
 
-#import <QuartzCore/QuartzCore.h>
+#import <TRuartzCore/TRuartzCore.h>
 #import <objc/runtime.h>
 
-#import "QTouchposeApplication.h"
-#import "QTouchposeCircleTouchView.h"
+#import "TRTouchposeApplication.h"
+#import "TRTouchposeCircleTouchView.h"
 
-NSString *const QTouchposeTouchesVisibleDidChange = @"QTouchposeTouchesVisibleDidChange";
+NSString *const TRTouchposeTouchesVisibleDidChange = @"TRTouchposeTouchesVisibleDidChange";
 
-@interface QTouchposeApplication ()
+@interface TRTouchposeApplication ()
 
 - (void)keyWindowChanged:(UIWindow *)window;
 - (void)bringTouchViewToFront;
 
 @end
 
-/// The QTouchposeTouchesView is an overlay view that is used as the superview for
-/// QTouchposeTouchView instances.
-@interface QTouchposeTouchesView : UIView
+/// The TRTouchposeTouchesView is an overlay view that is used as the superview for
+/// TRTouchposeTouchView instances.
+@interface TRTouchposeTouchesView : UIView
 
-- (instancetype)initWithFrame:(CGRect)frame touchViewFactory:(id<QTouchposeTouchViewFactory>)touchViewFactory;
+- (instancetype)initWithFrame:(CGRect)frame touchViewFactory:(id<TRTouchposeTouchViewFactory>)touchViewFactory;
 
 @end
 
-@implementation QTouchposeTouchesView
+@implementation TRTouchposeTouchesView
 {
     // Dictionary of touches being displayed. Keys are UITouch pointers and values are UIView pointers that visually represent
     // the touch on-screen. (A CFMutableDictionaryRef is used because NSDictionary requries its keys to conform to the
     // NSCopying protocol and UITouch doesn't. We don't need to retain either the UITouch or UIView instances because UITouch
     // objects are persistent throughout a multi-touch sequence, and the UIViews are retained by their superview.)
     CFMutableDictionaryRef _touchDictionary;
-    id<QTouchposeTouchViewFactory> _touchViewFactory;
+    id<TRTouchposeTouchViewFactory> _touchViewFactory;
 }
 
 #pragma mark - NSObject
@@ -57,10 +57,10 @@ NSString *const QTouchposeTouchesVisibleDidChange = @"QTouchposeTouchesVisibleDi
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    return [self initWithFrame:frame touchViewFactory:[[QTouchposeCircleTouchViewFactory alloc] init]];
+    return [self initWithFrame:frame touchViewFactory:[[TRTouchposeCircleTouchViewFactory alloc] init]];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame touchViewFactory:(id<QTouchposeTouchViewFactory>)touchViewFactory
+- (instancetype)initWithFrame:(CGRect)frame touchViewFactory:(id<TRTouchposeTouchViewFactory>)touchViewFactory
 {
     NSParameterAssert(touchViewFactory != nil);
 
@@ -70,7 +70,7 @@ NSString *const QTouchposeTouchesVisibleDidChange = @"QTouchposeTouchesVisibleDi
     return self;
 }
 
-#pragma mark - QTouchposeTouchesView
+#pragma mark - TRTouchposeTouchesView
 
 - (void)removeTouchesActiveTouches:(NSSet *)activeTouches
 {
@@ -99,7 +99,7 @@ NSString *const QTouchposeTouchesVisibleDidChange = @"QTouchposeTouchesVisibleDi
     for (UITouch *touch in touches)
     {
         CGPoint point = [touch locationInView:self];
-        UIView<QTouchposeTouchView> *fingerView = (UIView<QTouchposeTouchView> *)CFDictionaryGetValue(_touchDictionary, (__bridge const void *)(touch));
+        UIView<TRTouchposeTouchView> *fingerView = (UIView<TRTouchposeTouchView> *)CFDictionaryGetValue(_touchDictionary, (__bridge const void *)(touch));
 
         if (touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded)
         {
@@ -153,7 +153,7 @@ static void (*UIWindow_orig_becomeKeyWindow)(UIWindow *, SEL);
 // is used to move the overlay to the current key window.
 static void UIWindow_new_becomeKeyWindow(UIWindow *window, SEL _cmd)
 {
-    QTouchposeApplication *application = (QTouchposeApplication *)[UIApplication sharedApplication];
+    TRTouchposeApplication *application = (TRTouchposeApplication *)[UIApplication sharedApplication];
     [application keyWindowChanged:window];
     (*UIWindow_orig_becomeKeyWindow)(window, _cmd);
 }
@@ -164,18 +164,18 @@ static void (*UIWindow_orig_didAddSubview)(UIWindow *, SEL, UIView *);
 // used to keep the overlay view the top-most view of the window.
 static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
 {
-    if (![view conformsToProtocol:@protocol(QTouchposeTouchView)])
+    if (![view conformsToProtocol:@protocol(TRTouchposeTouchView)])
     {
-        QTouchposeApplication *application = (QTouchposeApplication *)[UIApplication sharedApplication];
+        TRTouchposeApplication *application = (TRTouchposeApplication *)[UIApplication sharedApplication];
         [application bringTouchViewToFront];
     }
     (*UIWindow_orig_didAddSubview)(window, _cmd, view);
 }
 
 
-@implementation QTouchposeApplication
+@implementation TRTouchposeApplication
 {
-    QTouchposeTouchesView *_touchesView;
+    TRTouchposeTouchesView *_touchesView;
 }
 
 #pragma mark - NSObject
@@ -189,9 +189,9 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(screenDidDisonnectNotification:) name:UIScreenDidDisconnectNotification object:nil];
 
         _automaticallyManageTouchesWhenScreenMirrored = YES;
-        _touchViewFactory = [[QTouchposeCircleTouchViewFactory alloc] init];
+        _touchViewFactory = [[TRTouchposeCircleTouchViewFactory alloc] init];
 
-        _touchesView = [[QTouchposeTouchesView alloc] init];
+        _touchesView = [[TRTouchposeTouchesView alloc] init];
         _touchesView.backgroundColor = [UIColor clearColor];
         _touchesView.opaque = NO;
         _touchesView.userInteractionEnabled = NO;
@@ -213,12 +213,12 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
     [super sendEvent:event];
 }
 
-#pragma mark - QApplication
+#pragma mark - TRApplication
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
     // We intercept calls to -becomeKeyWindow and -didAddSubview of UIWindow to manage the
-    // overlay view QTouchposeTouchesView and ensure it remains the top-most window.
+    // overlay view TRTouchposeTouchesView and ensure it remains the top-most window.
     UIWindow_orig_didAddSubview = (void (*)(UIWindow *, SEL, UIView *))SwizzleMethod([UIWindow class], @selector(didAddSubview:), (IMP)UIWindow_new_didAddSubview);
     UIWindow_orig_becomeKeyWindow = (void (*)(UIWindow *, SEL))SwizzleMethod([UIWindow class], @selector(becomeKeyWindow), (IMP)UIWindow_new_becomeKeyWindow);
 
@@ -293,7 +293,7 @@ static void UIWindow_new_didAddSubview(UIWindow *window, SEL _cmd, UIView *view)
         else
             [self hideTouchViews];
         _showTouches = showTouches;
-        [[NSNotificationCenter defaultCenter] postNotificationName:QTouchposeTouchesVisibleDidChange object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:TRTouchposeTouchesVisibleDidChange object:self];
     }
 }
 

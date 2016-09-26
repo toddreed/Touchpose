@@ -11,7 +11,7 @@ screen, but this be overridden.
 
 Before deciding to using Touchposé, see the Caveats section below.
 
-To use Touchposé with an app, indicate that `QTouchposeApplication`
+To use Touchposé with an app, indicate that `TRTouchposeApplication`
 should be used instead of `UIApplication`. This is done by specifying
 the application class in `UIApplicationMain()`:
 
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
     @autoreleasepool
     {
         return UIApplicationMain(argc, argv,
-                                 NSStringFromClass([QTouchposeApplication class]),
+                                 NSStringFromClass([TRTouchposeApplication class]),
                                  NSStringFromClass([MyAppDelegate class]));
     }
 }
@@ -49,15 +49,15 @@ end
 
 Instead of the default circle touch indicator, you can customize the
 view used for touches. To do this set the `touchViewFactory` property
-of `QTouchposeApplication` to a custom factory class that implements
-the `QTouchposeTouchViewFactory` protocol.
+of `TRTouchposeApplication` to a custom factory class that implements
+the `TRTouchposeTouchViewFactory` protocol.
 
 Touchposé includes an alternate touch view factory
-`QTouchposeImageTouchViewFactory` that uses an image for the touch
+`TRTouchposeImageTouchViewFactory` that uses an image for the touch
 view. This can be configured like this:
 
 ```objc
-QTouchposeImageTouchViewFactory *touchViewFactory = [[QTouchposeImageTouchViewFactory alloc] init];
+TRTouchposeImageTouchViewFactory *touchViewFactory = [[TRTouchposeImageTouchViewFactory alloc] init];
 touchViewFactory.touchImage = [UIImage imageNamed:@"Finger"];
 touchViewFactory.offset = CGPointMake(52, 43);
 touchposeApplication.touchViewFactory = touchViewFactory;

@@ -1,5 +1,5 @@
 //
-//  QTouchposeImageTouchView.h
+//  TRTouchposeImageTouchView.h
 //  Touchpose
 //
 //  Created by Todd Reed on 2014-11-02.
@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "QTouchposeTouchView.h"
+#import "TRTouchposeTouchView.h"
 
 
-@interface QTouchposeImageTouchViewFactory: NSObject <QTouchposeTouchViewFactory>
+@interface TRTouchposeImageTouchViewFactory: NSObject <TRTouchposeTouchViewFactory>
 
 @property (nonatomic, strong) UIImage *touchImage;
 @property (nonatomic) CGPoint offset;
@@ -19,7 +19,7 @@
 @end
 
 
-@interface QTouchposeImageTouchView : UIView <QTouchposeTouchView>
+@interface TRTouchposeImageTouchView : UIView <TRTouchposeTouchView>
 
 - (instancetype)initWithPoint:(CGPoint)point
                    touchImage:(UIImage *)touchImage

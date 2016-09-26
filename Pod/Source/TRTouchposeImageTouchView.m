@@ -1,15 +1,15 @@
 //
-//  QTouchposeImageTouchView.m
+//  TRTouchposeImageTouchView.m
 //  Touchpose
 //
 //  Created by Todd Reed on 2014-11-02.
 //  Copyright (c) 2014 Reaction Software Inc. All rights reserved.
 //
 
-#import "QTouchposeImageTouchView.h"
+#import "TRTouchposeImageTouchView.h"
 
 
-@implementation QTouchposeImageTouchViewFactory
+@implementation TRTouchposeImageTouchViewFactory
 
 #pragma mark - NSObject
 
@@ -25,11 +25,11 @@
     return self;
 }
 
-#pragma mark - QTouchposeTouchViewFactory
+#pragma mark - TRTouchposeTouchViewFactory
 
-- (UIView<QTouchposeTouchView> *)touchViewAtPoint:(CGPoint)point
+- (UIView<TRTouchposeTouchView> *)touchViewAtPoint:(CGPoint)point
 {
-    QTouchposeImageTouchView *touchView = [[QTouchposeImageTouchView alloc] initWithPoint:point touchImage:self.touchImage offset:self.offset];
+    TRTouchposeImageTouchView *touchView = [[TRTouchposeImageTouchView alloc] initWithPoint:point touchImage:self.touchImage offset:self.offset];
     touchView.touchEndAnimationDuration = self.touchEndAnimationDuration;
     return touchView;
 }
@@ -37,7 +37,7 @@
 @end
 
 
-@implementation QTouchposeImageTouchView
+@implementation TRTouchposeImageTouchView
 {
     UIImage *_touchImage;
     CGPoint _offset;
@@ -61,7 +61,7 @@
     }];
 }
 
-#pragma mark - QTouchposeImageTouchView
+#pragma mark - TRTouchposeImageTouchView
 
 - (instancetype)initWithPoint:(CGPoint)point
                    touchImage:(UIImage *)touchImage
@@ -85,7 +85,7 @@
     return self;
 }
 
-#pragma mark QTouchposeTouchView
+#pragma mark TRTouchposeTouchView
 
 - (void)setTouchPoint:(CGPoint)touchPoint
 {

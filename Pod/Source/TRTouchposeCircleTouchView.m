@@ -1,15 +1,15 @@
 //
-//  QTouchposeCircleTouchView.m
+//  TRTouchposeCircleTouchView.m
 //  Touchpose
 //
 //  Created by Todd Reed on 2014-11-02.
 //  Copyright (c) 2014 Reaction Software Inc. All rights reserved.
 //
 
-#import "QTouchposeCircleTouchView.h"
+#import "TRTouchposeCircleTouchView.h"
 
 
-@implementation QTouchposeCircleTouchViewFactory
+@implementation TRTouchposeCircleTouchViewFactory
 
 #pragma mark - NSObject
 
@@ -25,11 +25,11 @@
     return self;
 }
 
-#pragma mark - QTouchposeTouchViewFactory
+#pragma mark - TRTouchposeTouchViewFactory
 
-- (UIView<QTouchposeTouchView> *)touchViewAtPoint:(CGPoint)point
+- (UIView<TRTouchposeTouchView> *)touchViewAtPoint:(CGPoint)point
 {
-    return [[QTouchposeCircleTouchView alloc] initWithPoint:point
+    return [[TRTouchposeCircleTouchView alloc] initWithPoint:point
                                                       color:self.touchColor
                                   touchEndAnimationDuration:self.touchEndAnimationDuration
                                           touchEndTransform:self.touchEndTransform];
@@ -38,7 +38,7 @@
 @end
 
 
-@implementation QTouchposeCircleTouchView
+@implementation TRTouchposeCircleTouchView
 
 #pragma mark - UIView
 
@@ -59,7 +59,7 @@
     }];
 }
 
-#pragma mark - QTouchposeCircleTouchView
+#pragma mark - TRTouchposeCircleTouchView
 
 - (instancetype)initWithPoint:(CGPoint)point
                         color:(UIColor *)color
@@ -83,7 +83,7 @@
     return self;
 }
 
-#pragma mark QTouchposeTouchView
+#pragma mark TRTouchposeTouchView
 
 - (void)setTouchPoint:(CGPoint)touchPoint
 {

@@ -14,6 +14,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface QViewController : UIViewController
+@class TRViewController;
+
+@interface TRAppDelegate : UIResponder <UIApplicationDelegate>
+
+@property (strong, nonatomic) UIWindow *window;
+
+@property (strong, nonatomic) TRViewController *viewController;
 
 @end

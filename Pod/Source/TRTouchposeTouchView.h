@@ -1,5 +1,5 @@
 //
-//  QTouchposeTouchView.h
+//  TRTouchposeTouchView.h
 //  Touchpose
 //
 //  Created by Todd Reed on 2014-11-02.
@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 
 
-@class QTouchposeTouchView;
+@class TRTouchposeTouchView;
 
-/// The QTouchposeTouchView protocol must be implemented by any UIView subclass use to present a
+/// The TRTouchposeTouchView protocol must be implemented by any UIView subclass use to present a
 /// touch on the screen.
-@protocol QTouchposeTouchView <NSObject>
+@protocol TRTouchposeTouchView <NSObject>
 
 /// The point on the screen this touch view represents. Setting this property adjusts the center
 /// property of the receiver. When the touch view is centered on the touch point, setting
@@ -23,9 +23,9 @@
 @end
 
 
-@protocol QTouchposeTouchViewFactory <NSObject>
+@protocol TRTouchposeTouchViewFactory <NSObject>
 
-- (UIView<QTouchposeTouchView> *)touchViewAtPoint:(CGPoint)point;
+- (UIView<TRTouchposeTouchView> *)touchViewAtPoint:(CGPoint)point;
 
 @end
 

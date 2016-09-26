@@ -14,14 +14,14 @@
 
 
 #import <UIKit/UIKit.h>
-#import "QTouchposeTouchView.h"
+#import "TRTouchposeTouchView.h"
 
-/// `QTouchposeTouchesVisibleDidChange` is a notification sent when the `showTouches` property
-/// from `QTouchposeApplication` changes.
-extern NSString *const QTouchposeTouchesVisibleDidChange;
+/// `TRTouchposeTouchesVisibleDidChange` is a notification sent when the `showTouches` property
+/// from `TRTouchposeApplication` changes.
+extern NSString *const TRTouchposeTouchesVisibleDidChange;
 
-/// QTouchposeApplication
-@interface QTouchposeApplication : UIApplication
+/// TRTouchposeApplication
+@interface TRTouchposeApplication : UIApplication
 
 /// Indicate whether touches are rendered. The default value is NO.
 @property (nonatomic) BOOL showTouches;
@@ -30,9 +30,9 @@ extern NSString *const QTouchposeTouchesVisibleDidChange;
 /// device’s screen is mirrored. The default value is YES.
 @property (nonatomic) BOOL automaticallyManageTouchesWhenScreenMirrored;
 
-/// A factory for creating touch views. The default is QTouchposeCircleTouchViewFactory. If you
+/// A factory for creating touch views. The default is TRTouchposeCircleTouchViewFactory. If you
 /// want to customize the appearance of touches you can implement your own touch view class and
 /// factory.
-@property (nonatomic, strong) id<QTouchposeTouchViewFactory> touchViewFactory;
+@property (nonatomic, strong) id<TRTouchposeTouchViewFactory> touchViewFactory;
 
 @end

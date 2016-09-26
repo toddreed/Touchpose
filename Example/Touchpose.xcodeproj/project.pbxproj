@@ -10,22 +10,22 @@
 		2511319DC30AD18BD48DAE0C /* libPods-Touchposé.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 760300AD7B82BF2E006DDAE8 /* libPods-Touchposé.a */; };
 		5F5750F31964D63700CF65DE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5750F21964D63700CF65DE /* QuartzCore.framework */; };
 		5FD03E531D987D3500BFF677 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5FD03E521D987D3500BFF677 /* Launch Screen.storyboard */; };
-		5FD03E551D987E1300BFF677 /* QViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5FD03E541D987E1300BFF677 /* QViewController.xib */; };
+		5FD03E551D987E1300BFF677 /* TRViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5FD03E541D987E1300BFF677 /* TRViewController.xib */; };
 		5FDDAAF0196510740030CC94 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5FDDAAEF196510740030CC94 /* Images.xcassets */; };
 		5FFDBED914EEEAAB002CBB71 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBED814EEEAAB002CBB71 /* UIKit.framework */; };
 		5FFDBEDB14EEEAAB002CBB71 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBEDA14EEEAAB002CBB71 /* Foundation.framework */; };
 		5FFDBEDD14EEEAAB002CBB71 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FFDBEDC14EEEAAB002CBB71 /* CoreGraphics.framework */; };
 		5FFDBEE314EEEAAB002CBB71 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FFDBEE114EEEAAB002CBB71 /* InfoPlist.strings */; };
 		5FFDBEE514EEEAAB002CBB71 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFDBEE414EEEAAB002CBB71 /* main.m */; };
-		5FFDBEE914EEEAAB002CBB71 /* QAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFDBEE814EEEAAB002CBB71 /* QAppDelegate.m */; };
-		5FFDBEEC14EEEAAB002CBB71 /* QViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFDBEEB14EEEAAB002CBB71 /* QViewController.m */; };
+		5FFDBEE914EEEAAB002CBB71 /* TRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFDBEE814EEEAAB002CBB71 /* TRAppDelegate.m */; };
+		5FFDBEEC14EEEAAB002CBB71 /* TRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFDBEEB14EEEAAB002CBB71 /* TRViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2DD6FB68D4647556EB8CB634 /* Pods-Touchposé.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Touchposé.release.xcconfig"; path = "Pods/Target Support Files/Pods-Touchposé/Pods-Touchposé.release.xcconfig"; sourceTree = "<group>"; };
 		5F5750F21964D63700CF65DE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5FD03E521D987D3500BFF677 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		5FD03E541D987E1300BFF677 /* QViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QViewController.xib; sourceTree = "<group>"; };
+		5FD03E541D987E1300BFF677 /* TRViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRViewController.xib; sourceTree = "<group>"; };
 		5FDDAAEF196510740030CC94 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		5FFDBED414EEEAAB002CBB71 /* Touchposé.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Touchposé.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FFDBED814EEEAAB002CBB71 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -35,10 +35,10 @@
 		5FFDBEE214EEEAAB002CBB71 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5FFDBEE414EEEAAB002CBB71 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5FFDBEE614EEEAAB002CBB71 /* Touchpose-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Touchpose-Prefix.pch"; sourceTree = "<group>"; };
-		5FFDBEE714EEEAAB002CBB71 /* QAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAppDelegate.h; sourceTree = "<group>"; };
-		5FFDBEE814EEEAAB002CBB71 /* QAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QAppDelegate.m; sourceTree = "<group>"; };
-		5FFDBEEA14EEEAAB002CBB71 /* QViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QViewController.h; sourceTree = "<group>"; };
-		5FFDBEEB14EEEAAB002CBB71 /* QViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QViewController.m; sourceTree = "<group>"; };
+		5FFDBEE714EEEAAB002CBB71 /* TRAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TRAppDelegate.h; sourceTree = "<group>"; };
+		5FFDBEE814EEEAAB002CBB71 /* TRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TRAppDelegate.m; sourceTree = "<group>"; };
+		5FFDBEEA14EEEAAB002CBB71 /* TRViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TRViewController.h; sourceTree = "<group>"; };
+		5FFDBEEB14EEEAAB002CBB71 /* TRViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TRViewController.m; sourceTree = "<group>"; };
 		710C1D4B7B921F15E811FCA5 /* Pods-Touchposé.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Touchposé.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Touchposé/Pods-Touchposé.debug.xcconfig"; sourceTree = "<group>"; };
 		760300AD7B82BF2E006DDAE8 /* libPods-Touchposé.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Touchposé.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -71,9 +71,9 @@
 		5FD03E501D987CBD00BFF677 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				5FFDBEEA14EEEAAB002CBB71 /* QViewController.h */,
-				5FFDBEEB14EEEAAB002CBB71 /* QViewController.m */,
-				5FD03E541D987E1300BFF677 /* QViewController.xib */,
+				5FFDBEEA14EEEAAB002CBB71 /* TRViewController.h */,
+				5FFDBEEB14EEEAAB002CBB71 /* TRViewController.m */,
+				5FD03E541D987E1300BFF677 /* TRViewController.xib */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -121,8 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				5FD03E4F1D987C8800BFF677 /* UI */,
-				5FFDBEE714EEEAAB002CBB71 /* QAppDelegate.h */,
-				5FFDBEE814EEEAAB002CBB71 /* QAppDelegate.m */,
+				5FFDBEE714EEEAAB002CBB71 /* TRAppDelegate.h */,
+				5FFDBEE814EEEAAB002CBB71 /* TRAppDelegate.m */,
 				5FFDBEDF14EEEAAB002CBB71 /* Supporting Files */,
 			);
 			path = Source;
@@ -211,7 +211,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FD03E551D987E1300BFF677 /* QViewController.xib in Resources */,
+				5FD03E551D987E1300BFF677 /* TRViewController.xib in Resources */,
 				5FD03E531D987D3500BFF677 /* Launch Screen.storyboard in Resources */,
 				5FFDBEE314EEEAAB002CBB71 /* InfoPlist.strings in Resources */,
 				5FDDAAF0196510740030CC94 /* Images.xcassets in Resources */,
@@ -274,8 +274,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FFDBEE514EEEAAB002CBB71 /* main.m in Sources */,
-				5FFDBEE914EEEAAB002CBB71 /* QAppDelegate.m in Sources */,
-				5FFDBEEC14EEEAAB002CBB71 /* QViewController.m in Sources */,
+				5FFDBEE914EEEAAB002CBB71 /* TRAppDelegate.m in Sources */,
+				5FFDBEEC14EEEAAB002CBB71 /* TRViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

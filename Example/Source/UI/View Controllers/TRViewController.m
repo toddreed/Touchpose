@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "QViewController.h"
-#import "QTouchposeApplication.h"
+#import "TRViewController.h"
+#import "TRTouchposeApplication.h"
 
-@interface QViewController ()
+@interface TRViewController ()
 
 @property (nonatomic, strong) IBOutlet UISwitch *touchposeSwitch;
 
 @end
 
-@implementation QViewController
+@implementation TRViewController
 
 #pragma mark - NSObject
 
@@ -36,10 +36,10 @@
 {
     [super viewDidLoad];
 
-    QTouchposeApplication *application = (QTouchposeApplication *)[UIApplication sharedApplication];
+    TRTouchposeApplication *application = (TRTouchposeApplication *)[UIApplication sharedApplication];
     _touchposeSwitch.on = application.showTouches;
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(touchposeTouchesVisibleDidChange:) name:QTouchposeTouchesVisibleDidChange object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(touchposeTouchesVisibleDidChange:) name:TRTouchposeTouchesVisibleDidChange object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -54,11 +54,11 @@
     }
 }
 
-#pragma mark - QViewController
+#pragma mark - TRViewController
 
 - (void)updateTouchposeSwitch
 {
-    QTouchposeApplication *application = (QTouchposeApplication *)[UIApplication sharedApplication];
+    TRTouchposeApplication *application = (TRTouchposeApplication *)[UIApplication sharedApplication];
     _touchposeSwitch.on = application.showTouches;
 }
 
@@ -69,7 +69,7 @@
 
 - (IBAction)touchposeSwitchValueChanged:(id)sender
 {
-    QTouchposeApplication *application = (QTouchposeApplication *)[UIApplication sharedApplication];
+    TRTouchposeApplication *application = (TRTouchposeApplication *)[UIApplication sharedApplication];
     application.showTouches = _touchposeSwitch.on;
 }
 
