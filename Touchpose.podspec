@@ -8,6 +8,5 @@ Pod::Spec.new do |s|
   s.source   = { :git => 'https://github.com/toddreed/Touchpose.git', :tag => "#{s.version}" }
   s.platform = :ios
   s.source_files = '**/QTouchpose*.{h,m}'
-  s.requires_arc = true
   s.frameworks = 'QuartzCore'
 end
