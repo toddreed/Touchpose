@@ -74,20 +74,33 @@ NSString *const TRTouchposeTouchesVisibleDidChange = @"TRTouchposeTouchesVisible
 
 - (void)removeTouchesActiveTouches:(NSSet *)activeTouches
 {
-    CFIndex count = CFDictionaryGetCount(_touchDictionary);
+    const CFIndex count = CFDictionaryGetCount(_touchDictionary);
     if (count > 0)
     {
-        void const * keys[count];
-        void const * values[count];
+        void const *keys[count];
+        void const *values[count];
+        bool active[count]; // active[i] will be set to true if key[i] exists in activeTouches
+
+        for (CFIndex i = 0; i < count; ++i)
+            active[i] = false;
+
         CFDictionaryGetKeysAndValues(_touchDictionary, keys, values);
+
+        for (UITouch *touch in activeTouches)
+        {
+            for (CFIndex i = 0; i < count; ++i)
+            {
+                if (keys[i] == (__bridge const void *)touch)
+                    active[i] = true;
+            }
+        }
+
         for (CFIndex i = 0; i < count; ++i)
         {
-            UITouch *touch = (__bridge UITouch *)keys[i];
-
-            if (activeTouches == nil || ![activeTouches containsObject:touch])
+            if (!active[i])
             {
                 UIView *view = (__bridge UIView *)values[i];
-                CFDictionaryRemoveValue(_touchDictionary, (__bridge const void *)(touch));
+                CFDictionaryRemoveValue(_touchDictionary, keys[i]);
                 [view removeFromSuperview];
             }
         }
